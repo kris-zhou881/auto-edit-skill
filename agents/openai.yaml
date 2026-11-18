@@ -1,0 +1,4 @@
+interface:
+  display_name: "自动剪辑 Skill"
+  short_description: "按实测内容制作并剪辑 GitHub Skill 短视频"
+  default_prompt: "Use $auto-edit-skill to create a short video from a GitHub Skill test."
