@@ -5,11 +5,17 @@ from __future__ import annotations
 
 import argparse
 import json
+import hashlib
 import math
 import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+
+try:
+    from .creative_quality import validate_creative
+except ImportError:
+    from creative_quality import validate_creative
 
 
 RESEARCH_STATUSES = {"verified", "limited", "unavailable", "not_requested"}
@@ -41,7 +47,7 @@ def _has_timezone(value: Any) -> bool:
     return parsed.tzinfo is not None and parsed.utcoffset() is not None
 
 
-def validate_manifest(data: Any, root: Path | None = None, check_files: bool = False) -> list[str]:
+def validate_manifest(data: Any, root: Path | None = None, check_files: bool = False, stage: str = "auto") -> list[str]:
     errors: list[str] = []
     if not _is_object(data):
         return ["项目清单根节点必须是 JSON 对象"]
@@ -290,6 +296,25 @@ def validate_manifest(data: Any, root: Path | None = None, check_files: bool = F
             path = editing.get(key)
             if _has_text(path) and not (root / path).expanduser().exists():
                 errors.append(f"声明交付文件不存在: {key}={path}")
+    if edit_status == "blocked":
+        for key in ("blocker", "recovery_action"):
+            if not _has_text(editing.get(key)):
+                errors.append(f"剪辑受阻必须记录 {key}")
+    if check_files and root is not None and (edit_status == "qa_pass" or stage == "final"):
+        review = editing.get("creative_review")
+        review = review if _is_object(review) else {}
+        render = editing.get("render_path")
+        if _has_text(render):
+            path = (root / render).expanduser()
+            if path.is_file():
+                try:
+                    with path.open("rb") as stream:
+                        actual = hashlib.file_digest(stream, "sha256").hexdigest()
+                    if review.get("render_sha256") != actual:
+                        errors.append("创意验收成片 SHA256 不匹配，须重新看听本次导出")
+                except OSError as exc:
+                    errors.append(f"无法核验成片: {exc}")
+    errors.extend(validate_creative(data, stage))
     return errors
 
 
@@ -298,6 +323,7 @@ def main() -> int:
     parser.add_argument("manifest", type=Path, help="project-manifest.json 路径")
     parser.add_argument("--root", type=Path, help="素材和交付文件的项目根目录；默认使用清单所在目录")
     parser.add_argument("--check-files", action="store_true", help="检查标记为 ready/rendered 的本地文件")
+    parser.add_argument("--stage", choices=["auto", "script", "director", "edit", "final"], default="auto", help="制作阶段门槛；auto 在渲染/交付状态强制检查")
     args = parser.parse_args()
     try:
         data = json.loads(args.manifest.read_text(encoding="utf-8"))
@@ -305,7 +331,7 @@ def main() -> int:
         print(json.dumps({"valid": False, "errors": [str(exc)]}, ensure_ascii=False, indent=2))
         return 2
     root = args.root or args.manifest.parent
-    errors = validate_manifest(data, root=root, check_files=args.check_files)
+    errors = validate_manifest(data, root=root, check_files=args.check_files, stage=args.stage)
     print(json.dumps({"valid": not errors, "errors": errors}, ensure_ascii=False, indent=2))
     return 1 if errors else 0
 

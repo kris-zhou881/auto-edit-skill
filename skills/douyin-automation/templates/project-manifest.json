@@ -1,8 +1,10 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "project": {
     "name": "示例项目",
-    "platforms": ["douyin"],
+    "platforms": [
+      "douyin"
+    ],
     "topic": "演示用选题（非真实热点）",
     "duration_seconds": 30,
     "frame": {
@@ -18,7 +20,9 @@
     "sampled_at": null,
     "sources": [],
     "topic_candidates": [],
-    "limitations": ["模板文件，不含真实平台研究数据"]
+    "limitations": [
+      "模板文件，不含真实平台研究数据"
+    ]
   },
   "script": {
     "hook": "示例开场：不代表已验证的产品或结果。",
@@ -30,7 +34,10 @@
         "evidence_source_ids": []
       }
     ],
-    "beats": []
+    "beats": [],
+    "hook_candidates": [],
+    "selected_hook_id": null,
+    "selection_reason": null
   },
   "director": {
     "status": "planned",
@@ -48,26 +55,72 @@
           "rights": "pending"
         },
         "caption": "短字幕示例",
-        "claim_ids": ["claim-demo"]
+        "claim_ids": [
+          "claim-demo"
+        ],
+        "caption_style": null,
+        "motion": null,
+        "transition": null,
+        "music": null,
+        "sfx": null,
+        "voice_emotion": null,
+        "opening_result": false
       }
     ],
     "covers": [
-      {"name": "horizontal", "width": 1440, "height": 1080, "aspect_ratio": "4:3"},
-      {"name": "vertical", "width": 1080, "height": 1440, "aspect_ratio": "3:4"}
+      {
+        "name": "horizontal",
+        "width": 1440,
+        "height": 1080,
+        "aspect_ratio": "4:3"
+      },
+      {
+        "name": "vertical",
+        "width": 1080,
+        "height": 1440,
+        "aspect_ratio": "3:4"
+      }
     ]
   },
   "editing": {
     "status": "not_started",
-    "engine": "not_selected",
+    "engine": "jianying_desktop",
     "render_path": null,
     "editable_project_path": null,
-    "technical_qa": {"status": "not_run", "checks": []},
-    "human_review": {"status": "not_run", "reviewer": null, "reviewed_at": null, "issues": []}
+    "technical_qa": {
+      "status": "not_run",
+      "checks": []
+    },
+    "human_review": {
+      "status": "not_run",
+      "reviewer": null,
+      "reviewed_at": null,
+      "issues": []
+    },
+    "preflight": {
+      "status": "not_run",
+      "checked_at": null,
+      "app_version": null,
+      "operation_evidence": null,
+      "resources": []
+    },
+    "export_evidence": null,
+    "creative_review": {
+      "status": "not_run",
+      "reviewer": null,
+      "reviewed_at": null,
+      "render_path": null,
+      "checks": {},
+      "render_sha256": null
+    },
+    "rework_log": []
   },
   "delivery": {
     "status": "pending",
     "published": false,
     "publish_authorized": false,
-    "limitations": ["模板文件，不是已制作视频"]
+    "limitations": [
+      "模板文件，不是已制作视频"
+    ]
   }
 }

@@ -13,6 +13,7 @@ description: "用一个入口完成抖音/小红书短视频的热点研判、�
 2. 确认平台、目标人群、主题、时长、素材、软件、授权和交付形式。用户已给选题/脚本时跳过对应阶段，只补缺少的证据或制作步骤。
 3. 按依赖顺序执行：热点 → 导演 → 剪辑。每次只调用一个子 Agent，等该阶段交接后再继续；只加载当前角色文件和其需要的参考，不要把整包、测试或脚本源码全部读入上下文。主 Agent 将状态写回项目清单，并检查 `references/handoff-contract.md`。
 4. 会话提供原生子 Agent 时，把对应 `agents/*.md` 交给真实子 Agent；没有时在同一窗口按角色指令依次工作，不声称并发。子 Agent 不发布、不绕过权限、不擅自使用收费服务；主 Agent 负责汇总和最终复核。
+5. 制作任务按 `references/creative-quality.md` 执行创意门槛：三种钩子→真实画面兑现的一种→口语化脚本→逐镜头声画设计→剪映免费资源检查→最终六项看听验收。用户给稿也要检查钩子和口播；研究清单任务不强制进入制作。每阶段运行 `scripts/validate_project.py --stage script|director|edit|final`，失败不得进入下一阶段；主控分派具体返工并复检。
 
 ## 证据与权限
 
@@ -23,12 +24,12 @@ description: "用一个入口完成抖音/小红书短视频的热点研判、�
 ## 制作与交付
 
 - 导演遵循包内 `modules/douyin-style-director/` 和 `agents/director.md`：开头突出真实网页关键词，中段呈现真实滚屏与短字幕，少用文字卡；输出七份 JSON 方案，并把未拍/未录素材标为缺失。
-- 剪辑遵循 `agents/video-editor.md`、用户指定工具和实际工程。剪映工作流须由剪映导出；Remotion、FFmpeg 或其他工具不能冒充剪映成片。保留可编辑工程、依赖说明、素材授权、MP4、封面和 QA 记录；没导出/没工程就不得标完成。
+- 本账号默认优先使用桌面剪映专业版，剪辑前核验免费中文配音、字幕花字、转场特效、音乐和音效及许可；按 `agents/video-editor.md` 执行。只有用户明确选其他引擎才记录覆盖。剪映工作流须由剪映导出；Remotion、FFmpeg 或其他工具不能冒充剪映成片。保留可编辑工程、依赖说明、素材授权、MP4、封面和 QA 记录；没导出/没工程就不得标完成。
 - 抖音视频默认 9:16；封面横版 4:3（1440×1080）、竖版 3:4（1080×1440）。需要人物时沿用用户提供的卷发、细黑框眼镜男生参考。免费且许可范围清楚的音乐压在口播下；素材与成片默认存桌面「视频」文件夹。
-- 最终人工完整观看并听声后才能通过观感 QA；脚本和 ffprobe 只验证结构/媒体信息，不能证明事实、授权或观感。发布始终由用户明确授权。
+- 主 Agent 对前三秒、内容节奏、字幕美感、人声自然度、音乐和转场逐项验收；未达标就改稿或重剪并复检。最终人工完整观看并听声后才能通过观感 QA；脚本和 ffprobe 只验证结构/媒体信息，不能证明事实、授权或观感。发布始终由用户明确授权。
 
 ## 检查
 
-项目清单：`python3 scripts/validate_project.py <项目目录>/project-manifest.json --root <项目目录>`；有真实素材路径时加 `--check-files`。渲染后可用 `python3 scripts/inspect_render.py <视频.mp4> --expect-width 1080 --expect-height 1920 --expect-duration 30`，按需加 `--require-audio`。脚本不联网取数、不渲染视频、不替代人工 QA。
+项目清单结构检查（不等同创意通过）：`python3 scripts/validate_project.py <项目目录>/project-manifest.json --root <项目目录>`；有真实素材路径时加 `--check-files`。渲染后可用 `python3 scripts/inspect_render.py <视频.mp4> --expect-width 1080 --expect-height 1920 --expect-duration 30`，按需加 `--require-audio`。脚本不联网取数、不渲染视频、不替代人工 QA。
 
 `agents/openai.yaml` 只配置展示名和提示。Agents API 多 Agent 需由会话创建方开启；参见 `references/native-multi-agent.md`。

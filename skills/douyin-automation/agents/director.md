@@ -19,3 +19,9 @@
 ## 输出
 
 沿用原导演脚本支持的七份 JSON：`director_brief.json`、`shot_plan.json`、`timeline.json`、`typography_plan.json`、`transition_plan.json`、`audio_plan.json`、`quality_checklist.json`。`timeline.json` 是执行基准，时间单位秒、区间左闭右开。剪辑 Agent 按方案执行；改动创意需回报主 Agent。
+
+## 声画逐镜头交接
+
+进入本阶段先运行 --stage script。镜头中除原有字段外，必须填写 caption_style、motion、transition、music、sfx、voice_emotion；每项说明落点、目的、时机及资源需求。使用有理由的留白时明确写原因，不准空字段占位。前三秒从真实成品/结果开始，体现 selected_hook_id 对应钩子；导演不能换成标题卡。旁白的停顿与情绪落在镜头节拍上，字幕以关键词花字和可读性服务信息，不堆特效。
+
+方案写回 project-manifest.json，七份 JSON 同步保留；项目清单是额外声画字段的统一交接来源，旧脚本生成的七份 JSON 不代表已满足本次创意要求。交接剪辑前运行 --stage director。

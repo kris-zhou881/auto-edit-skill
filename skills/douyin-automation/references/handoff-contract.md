@@ -27,3 +27,7 @@
 `editing.status` 取 `not_started`、`blocked`、`rendered`、`qa_pass`。`rendered` 要有 MP4 和可编辑工程路径并且所有镜头素材就绪；`qa_pass` 还需通过技术检查与人工看/听记录。项目清单验证只检查结构和所声明状态；`--check-files` 才查真实文件存在。它不打开视频，也不能证明素材权利或数据真实。
 
 `delivery.published` 默认 `false`。只有用户对具体发布动作明确授权后才可以更新为 `true`，并将 `publish_authorized` 记为 `true`；Skill 不自动发布。
+
+## 创意升级接口
+
+制作时同时遵守 `creative-quality.md`，按 script→director→edit→final 顺序运行阶段检查。七份导演 JSON 保持兼容；新增声画字段和开头方案写回项目清单，不把旧生成器的空方案当作创意通过。旧清单可做结构检查，但不能绕过新交付门槛；自动检查在 editing 为 rendered/qa_pass 或 delivery 为 ready 时强制对应创意门槛。

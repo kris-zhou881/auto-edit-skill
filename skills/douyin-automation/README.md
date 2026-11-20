@@ -42,3 +42,7 @@ python3 scripts/validate_project.py templates/project-manifest.json --root .
 - `templates/project-manifest.json`：每期项目与证据清单。
 - `references/`：导演接口、研究/剪辑交接、原生多 Agent 边界、上游来源与用户已有剪辑资料。
 - `scripts/validate_project.py`、`scripts/inspect_render.py`、`tests/`：项目清单与渲染文件技术检查及测试。
+
+## 创意质量升级
+
+本账号默认桌面剪映专业版。先三种钩子选一，口语化分段脚本，再逐镜头声画设计和免费资源实查，最终六项实际看听验收；任一失败改稿/重剪。按 `references/creative-quality.md` 使用 `validate_project.py --stage script|director|edit|final`（每次选择一个阶段），最终加 `--check-files`；已渲染/交付状态始终强制较高门槛。旧项目不重建，补齐新增记录后再完成制作。代码只验证记录与文件，不负责登录剪映、试听素材或自动判断自然度。

@@ -8,9 +8,11 @@
 
 ## 先选实际执行方式
 
-1. 按用户指定的剪辑工具操作。
-2. 用户要求剪映专业版时，使用桌面版剪映工程和实际导出；如界面、登录、会员或授权条件阻止，保留已有进度并报告，不用 FFmpeg/Remotion 冒充剪映导出。
-3. 用户未指定且本机已有 Remotion 工程时，优先沿用工程；需要 Remotion 指导时先读包内 `modules/remotion-motion-graphics/SKILL.md`、`references/design-rules.md` 和 `references/motion-patterns.md`。只在 Remotion、FFmpeg、CapCut/剪映 CLI 等工具确实已可用且适合本期时选用。没有 CLI/API 不代表已实现自动化。
+1. 本账号默认使用桌面剪映专业版；先运行 --stage director，再检查实际安装、打开/操作能力、当前版本与免费资源、授权范围。填 editing.preflight，不能凭软件名字推断能自动操作。
+2. 按 `references/creative-quality.md` 登记免费中文配音、字幕花字、转场/特效、背景音乐、音效。优先选择适合镜头、确实免费且许可覆盖目标用途的剪映资源，保留资源名/ID、检查时间和界面/许可证据路径。配音先试听同一句短稿，选自然的一种；字幕不要默认黑底白字。
+3. 剪映缺失、不可操作、资源/授权不明或导出受阻时标记 blocked、写 blocker 和 recovery_action，保留工程与素材，报告。不得静默退成素材拼接，也不得把 FFmpeg/Remotion 输出称为剪映导出。
+4. 只有用户明确选择其他引擎时，记录 engine_override（engine、reason、user_instruction）后使用；仍须满足声画设计、授权和质量门槛。已有 Remotion 工程只是可复用素材，不再决定默认引擎。需要该模块时按需读取包内指南。
+5. 准备真正剪辑前运行 --stage edit；导出后记录 export_evidence 与实际工程/视频路径，再做最终检查。
 
 ## 制作规则
 
@@ -27,3 +29,7 @@
 - 人工从头到尾看画面并听声音，检查事实、字幕、滚动可读性、裁切、黑帧、音画同步、配乐许可、开场与结尾。逐项记录状态、检查时间与发现的问题。
 - 只有实际渲染、可播放并完成技术检查后才标记 `rendered`。只有实际人工观看/听声且问题已处理后，才标记人工 QA `passed`。
 - 不发布或互动。成片、剪辑工程或授权任一环节缺失时，交付现有文件和明确的待办，不声称完整完成。
+
+## 创意返工
+
+实际完整看听当前导出，逐项记录 creative_review 的 opening、rhythm、captions、voice、music、transitions 六项（status、evidence、issues）以及 reviewer、reviewed_at、render_path。evidence 要有时间码和具体观察，不用“好看/自然”空结论。主 Agent 复核所有项；失败项改脚本或重剪，写 rework_log 并复检新导出，旧报告不得冒充新版本。最终 --stage final --check-files 未通过不能交付为 ready。
