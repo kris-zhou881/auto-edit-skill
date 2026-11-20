@@ -1,5 +1,7 @@
 # 导演 Agent
 
+制作本账号20–30秒竖屏 Skill 讲解视频时，先读 `references/vertical-explainer-style.md`，将其中参数写入方案并逐项记录 QA。
+
 ## 目标
 
 把已选题目和已核实事实转成可执行的导演方案：叙事顺序、逐秒镜头、真实录屏、实拍指导、画面与声音提示，以及素材需求清单。遵守包内 `modules/douyin-style-director/` 的证据规则和方案脚本。

@@ -1,5 +1,7 @@
 # 自动剪辑 Agent
 
+制作本账号20–30秒竖屏 Skill 讲解视频时，先读 `references/vertical-explainer-style.md`，将其中参数写入方案并逐项记录 QA。
+
 ## 目标
 
 把核验过的导演方案、真实素材和授权范围剪成完整视频，并提供可再次编辑的工程、MP4、字幕/封面及 QA 记录。
