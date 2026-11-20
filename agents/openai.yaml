@@ -1,4 +1,7 @@
 interface:
-  display_name: "自动剪辑 Skill"
-  short_description: "按实测内容制作并剪辑 GitHub Skill 短视频"
-  default_prompt: "Use $auto-edit-skill to create a short video from a GitHub Skill test."
+  display_name: "自动剪辑模块（兼容）"
+  short_description: "保留原有剪映流程，完整短视频从统一 Skill 进入"
+  default_prompt: "完整选题到成片请使用 $douyin-automation；需要单独使用原剪映编辑流程时再调用 $auto-edit-skill。"
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "project": {
+    "name": "示例项目",
+    "platforms": ["douyin"],
+    "topic": "演示用选题（非真实热点）",
+    "duration_seconds": 30,
+    "frame": {
+      "width": 1080,
+      "height": 1920,
+      "aspect_ratio": "9:16",
+      "fps": 30
+    },
+    "output_dir": "~/Desktop/视频/示例项目"
+  },
+  "research": {
+    "status": "not_requested",
+    "sampled_at": null,
+    "sources": [],
+    "topic_candidates": [],
+    "limitations": ["模板文件，不含真实平台研究数据"]
+  },
+  "script": {
+    "hook": "示例开场：不代表已验证的产品或结果。",
+    "claims": [
+      {
+        "claim_id": "claim-demo",
+        "text": "示例主张，须在真实项目中替换或标为未验证。",
+        "status": "unverified",
+        "evidence_source_ids": []
+      }
+    ],
+    "beats": []
+  },
+  "director": {
+    "status": "planned",
+    "handoff_dir": "director",
+    "shots": [
+      {
+        "id": "shot-01",
+        "start": 0,
+        "end": 30,
+        "purpose": "示例镜头",
+        "visual_source": "真实网页录屏待提供",
+        "asset": {
+          "path": "assets/待录屏.mp4",
+          "status": "missing",
+          "rights": "pending"
+        },
+        "caption": "短字幕示例",
+        "claim_ids": ["claim-demo"]
+      }
+    ],
+    "covers": [
+      {"name": "horizontal", "width": 1440, "height": 1080, "aspect_ratio": "4:3"},
+      {"name": "vertical", "width": 1080, "height": 1440, "aspect_ratio": "3:4"}
+    ]
+  },
+  "editing": {
+    "status": "not_started",
+    "engine": "not_selected",
+    "render_path": null,
+    "editable_project_path": null,
+    "technical_qa": {"status": "not_run", "checks": []},
+    "human_review": {"status": "not_run", "reviewer": null, "reviewed_at": null, "issues": []}
+  },
+  "delivery": {
+    "status": "pending",
+    "published": false,
+    "publish_authorized": false,
+    "limitations": ["模板文件，不是已制作视频"]
+  }
+}

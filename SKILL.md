@@ -1,11 +1,13 @@
 ---
 name: auto-edit-skill
-description: Plan and produce original short videos that test GitHub AI Skills, following the evidence-based style of Douyin creator 西瓜同学🍉 and editing the final video in Jianying/CapCut desktop. Use when the user asks to find, audit, test, record, script, edit, cover, or package a Skill showcase video.
+description: "Run the original CapCut editing module for a user-requested editing-only task. For the full Douyin/Xiaohongshu topic-to-delivery workflow, use $douyin-automation, which routes to this module when appropriate."
 metadata:
   display_name: 自动剪辑 Skill
 ---
 
 # 自动剪辑 Skill
+
+完整的热点、脚本、导演到剪辑流程统一从 `$douyin-automation` 进入。本 Skill 保留用户原有的剪映/CapCut 制作流程，作为总控调用的编辑模块；不要求用户切换窗口。需要独立执行剪辑流程时，仍可显式调用本 Skill。
 
 把 GitHub Skill 的发现、审查、实测、录屏、脚本、剪映专业版剪辑、封面、质检和交付串成一个真实可复核的制作流程。视频必须原创，并以实际测试结果为依据；不得发布，除非用户明确授权。
 

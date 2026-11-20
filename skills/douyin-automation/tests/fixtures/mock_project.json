@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "project": {
+    "name": "测试夹具（虚构数据）",
+    "platforms": ["douyin"],
+    "topic": "模拟候选题",
+    "duration_seconds": 30,
+    "frame": {"width": 1080, "height": 1920, "aspect_ratio": "9:16", "fps": 30}
+  },
+  "research": {
+    "status": "limited",
+    "sampled_at": "2026-11-20T10:00:00+08:00",
+    "sources": [
+      {
+        "source_id": "mock-1",
+        "platform": "mock",
+        "title": "虚构测试来源",
+        "url": "https://example.com/mock-source",
+        "published_at": null,
+        "observed_at": "2026-11-20T10:00:00+08:00",
+        "audience": {"status": "inferred", "basis": "仅用于测试的虚构说明"},
+        "metrics": []
+      }
+    ],
+    "topic_candidates": [],
+    "limitations": ["测试夹具，不含真实平台数据"]
+  },
+  "script": {
+    "hook": "测试钩子，不代表真实结论。",
+    "claims": [
+      {
+        "claim_id": "c1",
+        "text": "虚构的未验证主张",
+        "status": "unverified",
+        "evidence_source_ids": []
+      }
+    ],
+    "beats": []
+  },
+  "director": {
+    "status": "planned",
+    "handoff_dir": "director",
+    "shots": [
+      {
+        "id": "s1",
+        "start": 0,
+        "end": 30,
+        "purpose": "测试",
+        "visual_source": "待录屏",
+        "asset": {"path": "assets/missing.mp4", "status": "missing", "rights": "pending"},
+        "caption": "测试字幕",
+        "claim_ids": ["c1"]
+      }
+    ],
+    "covers": [
+      {"name": "horizontal", "width": 1440, "height": 1080, "aspect_ratio": "4:3"},
+      {"name": "vertical", "width": 1080, "height": 1440, "aspect_ratio": "3:4"}
+    ]
+  },
+  "editing": {
+    "status": "not_started",
+    "engine": "not_selected",
+    "render_path": null,
+    "editable_project_path": null,
+    "technical_qa": {"status": "not_run", "checks": []},
+    "human_review": {"status": "not_run", "reviewer": null, "reviewed_at": null, "issues": []}
+  },
+  "delivery": {"status": "pending", "published": false, "publish_authorized": false, "limitations": ["测试夹具"]}
+}
