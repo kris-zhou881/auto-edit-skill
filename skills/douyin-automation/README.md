@@ -29,7 +29,7 @@ python3 scripts/validate_project.py templates/project-manifest.json --root .
 
 ## 工具与权限边界
 
-- 优先保留并使用原有导演 Skill、剪映流程和 Remotion Skill；新包不复制引擎代码、不自动安装第三方数据接口。
+- 原导演 Skill、剪映流程和 Remotion 制作规范均随包保留；新包不自动安装第三方数据接口或外部服务。
 - 抖音 scraper、小红书 MCP 是可选连接。登录、收费 API、验证码和平台互动必须有单独授权；本 Skill 不绕过风控、不自动发布。
 - 素材/工程/封面/成片默认保存到 `~/Desktop/视频/<项目名>`，用户指定位置时按指定位置保存。
 - 完整人工观看和听声后才能标记 QA 通过；脚本检查只表示结构或技术项已检查。
@@ -38,6 +38,7 @@ python3 scripts/validate_project.py templates/project-manifest.json --root .
 
 - `SKILL.md`：唯一调用入口与总控流程。
 - `agents/`：三份专业角色提示；子 Agent 由运行时调用，不是三个独立窗口。
+- `modules/`：随包保留原导演与 Remotion Skill 的指南、参考文件、脚本和主题组件，不作为额外的用户入口。
 - `templates/project-manifest.json`：每期项目与证据清单。
 - `references/`：导演接口、研究/剪辑交接、原生多 Agent 边界、上游来源与用户已有剪辑资料。
 - `scripts/validate_project.py`、`scripts/inspect_render.py`、`tests/`：项目清单与渲染文件技术检查及测试。

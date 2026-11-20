@@ -1,14 +1,14 @@
 # 原导演 Skill 接入说明
 
-本 Skill 沿用用户现有 `douyin-style-director`，它已包含参考视频分析、风格档案、方案初始化/校验、Remotion 交接和成片复核脚本。该 Skill 能辅助分析并输出方案；不会替用户拍摄、生成视频或完成最终剪辑。
+本包在 `modules/douyin-style-director/` 内保留并升级用户现有导演 Skill，包含参考视频分析、风格档案、方案初始化/校验、Remotion 交接和成片复核脚本。它能辅助分析并输出方案；不会替用户拍摄、生成视频或完成最终剪辑。原独立目录也保留在本机，完整流程仍从统一入口调用。
 
 ## 使用时读取
 
-- `douyin-style-director/SKILL.md`
+- `modules/douyin-style-director/SKILL.md`
 - `references/analysis.md`：只有分析参考视频时需要。
 - `references/production.md`：导演新片时需要。
 - `references/handoff.md`：向剪辑工程交接时需要。
-- `scripts/director.py`：仅在相应素材/方案存在、依赖可用且输出目录安全时运行。
+- `modules/douyin-style-director/scripts/director.py`：仅在相应素材/方案存在、依赖可用且输出目录安全时运行。
 
 原始方案包含七个 JSON 文件，保留 `timeline.json` 作为剪辑时间线。通用选题使用 `topic.title`；旧项目字段 `topic.github_skill` 继续兼容。方案脚本的 JSON 交接是现有脚本接口，不等同剪映草稿或 Remotion 工程。
 
