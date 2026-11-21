@@ -21,8 +21,9 @@ Codex 会话允许原生子 Agent 时，主 Agent 按角色提示文件真实调
 在本目录运行：
 
 ```bash
-python3 -m unittest discover -s tests -v
-python3 scripts/validate_project.py templates/project-manifest.json --root .
+python3 scripts/doctor.py                              # 环境依赖自检
+python3 -m unittest discover -s tests -v               # 全量单元测试
+python3 scripts/validate_project.py templates/project-manifest.json --root . # 清单格式校验
 ```
 
 `project-manifest.json` 是模板，不含真实热点、素材或成片。`validate_project.py` 检查清单结构、证据引用、镜头时间线与交付状态；可加 `--check-files` 检查磁盘文件是否存在。`inspect_render.py` 用 ffprobe 检查实际视频的时长、画幅、帧率和音轨；人工观看和听声仍需单独完成。两个脚本都不会联网取数、验证平台数据真实性或渲染视频。

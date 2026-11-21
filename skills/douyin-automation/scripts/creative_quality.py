@@ -127,8 +127,9 @@ def validate_creative(data, stage='auto'):
     require(review.get('status') == 'passed', '创意质量未通过，需返工并重新看听')
     require(text(review.get('reviewer')) and timestamp(review.get('reviewed_at')), '创意验收需检查人和带时区的时间')
     require(text(review.get('render_path')) and review.get('render_path') == editing.get('render_path'), '创意验收必须对应当前导出文件')
-    digest = review.get('render_sha256')
-    require(isinstance(digest, str) and len(digest) == 64 and all(c in '0123456789abcdef' for c in digest), '创意验收需记录当前成片 SHA256')
+    raw_digest = review.get('render_sha256')
+    digest = str(raw_digest or '').strip().lower()
+    require(isinstance(raw_digest, str) and len(digest) == 64 and all(c in '0123456789abcdef' for c in digest), '创意验收需记录当前成片 SHA256')
     checks = obj(review.get('checks'))
     for key in REVIEW_KEYS:
         check = obj(checks.get(key))

@@ -1,0 +1,5 @@
+# auto-edit-skill requirements
+# The core validation scripts only require Python standard library (3.9+)
+
+# Optional testing dependencies:
+pytest>=7.0.0

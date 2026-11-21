@@ -47,6 +47,17 @@ def _has_timezone(value: Any) -> bool:
     return parsed.tzinfo is not None and parsed.utcoffset() is not None
 
 
+def _file_sha256(path: Path) -> str:
+    if hasattr(hashlib, "file_digest"):
+        with path.open("rb") as stream:
+            return hashlib.file_digest(stream, "sha256").hexdigest()
+    h = hashlib.sha256()
+    with path.open("rb") as stream:
+        while chunk := stream.read(65536):
+            h.update(chunk)
+    return h.hexdigest()
+
+
 def validate_manifest(data: Any, root: Path | None = None, check_files: bool = False, stage: str = "auto") -> list[str]:
     errors: list[str] = []
     if not _is_object(data):
@@ -308,8 +319,7 @@ def validate_manifest(data: Any, root: Path | None = None, check_files: bool = F
             path = (root / render).expanduser()
             if path.is_file():
                 try:
-                    with path.open("rb") as stream:
-                        actual = hashlib.file_digest(stream, "sha256").hexdigest()
+                    actual = _file_sha256(path)
                     if review.get("render_sha256") != actual:
                         errors.append("创意验收成片 SHA256 不匹配，须重新看听本次导出")
                 except OSError as exc:

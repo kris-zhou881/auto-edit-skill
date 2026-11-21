@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# macOS
+.DS_Store
+
+# Temporary outputs
+out/
+dist/
+build/
+*.mp4
+*.wav
+*.png
+!/modules/**/assets/*.png
+!/templates/**

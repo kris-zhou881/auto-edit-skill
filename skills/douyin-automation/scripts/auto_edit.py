@@ -42,15 +42,24 @@ def measured(path, filters):
 
 def silence(path, minimum=0.80):
     log = measured(path, f"silencedetect=n=-42dB:d={minimum}")
-    starts = re.findall(r"silence_start: ([\d.]+)", log)
-    ends = re.findall(r"silence_end: ([\d.]+)", log)
-    return [[float(a), float(b)] for a, b in zip(starts, ends)]
+    starts = [float(x) for x in re.findall(r"silence_start: ([\d.]+)", log)]
+    ends = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", log)]
+    if len(starts) > len(ends):
+        try:
+            duration = float(media(path)["format"]["duration"])
+            ends.append(duration)
+        except Exception:
+            pass
+    return [[a, b] for a, b in zip(starts, ends)]
 
 
 def db(path):
     log = measured(path, "volumedetect")
-    return tuple(float(re.search(rf"{key}_volume: ([\d.-]+) dB", log)[1])
-                 for key in ("mean", "max"))
+    res = []
+    for key in ("mean", "max"):
+        match = re.search(rf"{key}_volume: ([\d.-]+) dB", log)
+        res.append(float(match[1]) if match else -70.0)
+    return tuple(res)
 
 
 def write_json(path, data):
@@ -154,7 +163,11 @@ def caption_lines(text, limit):
 
 def concat(parts, output, folder):
     listing = folder / (output.stem + "-concat.txt")
-    listing.write_text("".join(f"file '{x.name}'\n" for x in parts))
+    lines = []
+    for x in parts:
+        escaped = x.name.replace("'", "'\\''")
+        lines.append(f"file '{escaped}'\n")
+    listing.write_text("".join(lines), encoding="utf-8")
     ff("-f", "concat", "-safe", 0, "-i", listing, "-c", "copy", output)
 
 
