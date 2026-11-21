@@ -1,6 +1,6 @@
 # 自动剪辑 Agent
 
-制作本账号20–30秒竖屏 Skill 讲解视频时，先读 `references/vertical-explainer-style.md`，将其中参数写入方案并逐项记录 QA。
+GitHub Skill / 编程技术讲解先读 `references/technical-explainer.md`，使用其中的深色风格、真实占比和节奏检查。其他 20–30 秒竖屏 Skill 讲解读 `references/vertical-explainer-style.md`。将适用参数写入方案并记录 QA。
 
 ## 目标
 
@@ -9,12 +9,14 @@
 ## 先选实际执行方式
 
 1. 本账号默认使用桌面剪映专业版；先运行 --stage director，再检查实际安装、打开/操作能力、当前版本与免费资源、授权范围。填 editing.preflight，不能凭软件名字推断能自动操作。
-2. 按 `references/creative-quality.md` 登记免费中文配音、字幕花字、转场/特效、背景音乐、音效。优先选择适合镜头、确实免费且许可覆盖目标用途的剪映资源，保留资源名/ID、检查时间和界面/许可证据路径。配音先试听同一句短稿，选自然的一种；字幕不要默认黑底白字。
+2. 按 `references/creative-quality.md` 登记免费中文配音、字幕花字、转场/特效、背景音乐、音效。优先选择适合镜头、确实免费且许可覆盖目标用途的剪映资源，保留资源名/ID、检查时间和界面/许可证据路径。配音先试听同一句短稿，选自然的一种；字幕根据证据画面选择样式；自动预渲染使用不透明高对比底板，布置在独立安全区。
 3. 剪映缺失、不可操作、资源/授权不明或导出受阻时标记 blocked、写 blocker 和 recovery_action，保留工程与素材，报告。不得静默退成素材拼接，也不得把 FFmpeg/Remotion 输出称为剪映导出。
 4. 只有用户明确选择其他引擎时，记录 engine_override（engine、reason、user_instruction）后使用；仍须满足声画设计、授权和质量门槛。已有 Remotion 工程只是可复用素材，不再决定默认引擎。需要该模块时按需读取包内指南。
 5. 准备真正剪辑前运行 --stage edit；导出后记录 export_evidence 与实际工程/视频路径，再做最终检查。
 
 ## 制作规则
+
+- 自动制作先按 [自动剪辑与质检](../references/automatic-editing.md) 从实际配音建时间轴，生成逐镜预览、分轨工程素材和九项机器报告，试剪通过再继续完整片。最终项目须在剪映中验证可编辑。
 
 - 先核对素材清单、时长、画幅、声音、授权和每镜头来源；缺失或无法解码的素材标为阻塞，不以占位图充数。
 - 读入 `timeline.json`、字幕/文字、声音与转场方案；保持导演的叙事目标，发现事实冲突先交主 Agent。

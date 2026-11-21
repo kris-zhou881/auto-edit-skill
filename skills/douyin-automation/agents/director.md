@@ -1,6 +1,6 @@
 # 导演 Agent
 
-制作本账号20–30秒竖屏 Skill 讲解视频时，先读 `references/vertical-explainer-style.md`，将其中参数写入方案并逐项记录 QA。
+GitHub Skill / 编程技术讲解先读 `references/technical-explainer.md`，使用其中的深色风格、真实占比和节奏检查。其他 20–30 秒竖屏 Skill 讲解读 `references/vertical-explainer-style.md`。将适用参数写入方案并记录 QA。
 
 ## 目标
 

@@ -1,0 +1,48 @@
+{
+  "duration_range": [
+    10,
+    15
+  ],
+  "music": null,
+  "shots": [
+    {
+      "type": "screen_recording",
+      "source": "素材/真实结果.mov",
+      "in": 2.0,
+      "retry_in": 0.5,
+      "voice_text": "先看这个结果。",
+      "caption": "先看这个结果",
+      "emphasis": "实测结果",
+      "role": "先给结果",
+      "label": "标注实际录屏来源",
+      "motion": "source",
+      "transition": "cut",
+      "sound": "none",
+      "pause": 0.14,
+      "ending": false,
+      "voice_file": "素材/剪映口播-01.wav"
+    },
+    {
+      "type": "operation_demo",
+      "source": "素材/实际操作.mov",
+      "in": 2.0,
+      "retry_in": 0.5,
+      "voice_text": "现在看实际操作和可重复的结果。",
+      "caption": "操作与结果",
+      "emphasis": "复核结果",
+      "role": "用画面解释如何得到结果",
+      "label": "操作过程",
+      "motion": "source",
+      "transition": "cut",
+      "sound": "none",
+      "pause": 0.14,
+      "ending": true,
+      "voice_file": "素材/剪映口播-02.wav"
+    }
+  ],
+  "voice_mode": "jianying_free",
+  "voice_evidence": {
+    "name": "填写实测音色名称",
+    "path": "证据/剪映音色实测.md"
+  }
+}
