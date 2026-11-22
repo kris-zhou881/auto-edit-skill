@@ -122,15 +122,66 @@ function Shot({shot, frame, frozen = false}) {
   </AbsoluteFill>;
 }
 
+// Remotion-drawn motion typography. Does not invoke macOS subtitle/overlay APIs.
+const captionPalettes = {
+  kinetic: {normal: '#FFF8EC', accent: '#FFE16A', alert: '#FF9777', outline: '#172532'},
+  sticker: {normal: '#FFFFFF', accent: '#FFDD55', alert: '#FF8888', outline: '#162330'},
+  minimal: {normal: '#FFFFFF', accent: '#C7F5AB', alert: '#FFD09B', outline: '#12212B'},
+};
+
 function Caption({caption, frame}) {
   const {text, emphasis, emphasisAt} = caption;
-  const start = emphasis && frame >= emphasisAt ? text.indexOf(emphasis) : -1;
-  return <div style={{position: 'absolute', left: 88, right: 150, bottom: 350, padding: '17px 28px',
-    borderRadius: 14, background: theme.paper, color: theme.ink, fontFamily: theme.sans,
-    fontSize: 45, fontWeight: 700, textAlign: 'center', lineHeight: 1.35}}>
-    {start < 0 ? text : <>
-      {text.slice(0, start)}<span style={{color: theme.accent}}>{emphasis}</span>{text.slice(start + emphasis.length)}
-    </>}
+  const styleName = caption.style ?? 'kinetic';
+  const palette = captionPalettes[styleName] ?? captionPalettes.kinetic;
+  const startIndex = emphasis ? text.indexOf(emphasis) : -1;
+  // Old timelines still get animated entrance and a timed keyword punch.
+  const pieces = caption.segments ?? (startIndex < 0 ? [{text, at: caption.from}] : [
+    ...(startIndex ? [{text: text.slice(0, startIndex), at: caption.from}] : []),
+    {text: emphasis, at: caption.from, tone: 'accent', emphasisAt},
+    ...(startIndex + emphasis.length < text.length ?
+      [{text: text.slice(startIndex + emphasis.length), at: caption.from}] : []),
+  ]);
+  const inFrames = Math.max(4, Math.round(fps * 0.22));
+  const enter = ease(frame, caption.from, caption.from + inFrames);
+  const endStart = Math.max(caption.from, caption.to - Math.round(fps * 0.16));
+  const exit = 1 - ease(frame, endStart, caption.to);
+  return <div style={{
+    position: 'absolute', left: 88, right: 192, bottom: 445,
+    pointerEvents: 'none', textAlign: 'center',
+    transform: 'translateY(' + ((1 - enter) * 19) + 'px)',
+    opacity: enter * exit, fontFamily: theme.sans,
+  }}>
+    <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center',
+      alignItems: 'baseline', gap: '0 2px',
+      padding: styleName === 'sticker' ? '16px 20px' : '8px 14px',
+      borderRadius: 20,
+      background: styleName === 'sticker' ? 'rgba(11,24,33,0.66)' : 'transparent',
+    }}>
+      {pieces.map((piece, i) => {
+        const cue = piece.emphasisAt ?? piece.at;
+        const progress = ease(frame, piece.at, piece.at + inFrames);
+        const highlighted = (piece.tone === 'accent' || piece.tone === 'alert') && frame >= cue;
+        const pulse = highlighted ? 1 - ease(frame, cue, cue + Math.round(fps * 0.25)) : 0;
+        const size = styleName === 'minimal' ? 49 : styleName === 'sticker' ? 55 : 57;
+        const color = highlighted ? palette[piece.tone] : palette.normal;
+        return <span key={i} style={{position: 'relative', display: 'inline-block',
+          whiteSpace: 'pre-wrap', opacity: progress,
+          transform: 'translateY(' + ((1 - progress) * 22) + 'px) scale(' +
+            (0.88 + 0.12 * progress + (highlighted ? 0.10 * pulse : 0)) + ')',
+          fontSize: size, fontWeight: 900, letterSpacing: '0.5px', lineHeight: 1.24,
+          color, WebkitTextStroke: (styleName === 'minimal' ? 1.3 : 2.0) + 'px ' + palette.outline,
+          paintOrder: 'stroke fill',
+          textShadow: '0 3px 0 #102330, 0 7px 16px rgba(0,0,0,0.6)',
+        }}>
+          <span style={{position: 'relative', zIndex: 1}}>{piece.text}</span>
+          {highlighted && styleName !== 'minimal' &&
+            <span aria-hidden="true" style={{position: 'absolute', left: 0, bottom: 3,
+              height: 10, width: (87 * ease(frame, cue, cue + Math.round(fps * 0.22))) + '%',
+              background: piece.tone === 'alert' ? '#F65E52' : '#F29A38',
+              borderRadius: 8, opacity: 0.85}} />}
+        </span>;
+      })}
+    </div>
   </div>;
 }
 
