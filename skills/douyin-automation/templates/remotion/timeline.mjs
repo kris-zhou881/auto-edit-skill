@@ -65,6 +65,21 @@ export function validateTimeline(timeline) {
     check(interval(caption) && caption.from >= end && label(caption.text), '字幕必须有文字且按帧排列');
     check(caption.emphasis === undefined || (label(caption.emphasis) && caption.text.includes(caption.emphasis)
       && integer(caption.emphasisAt, caption.from, caption.to - 1)), '字幕强调词及时间无效');
+    check(caption.style === undefined || ['kinetic', 'sticker', 'minimal'].includes(caption.style),
+      '字幕花字样式无效');
+    if (caption.segments !== undefined) {
+      check(Array.isArray(caption.segments) && caption.segments.length > 0 &&
+        caption.segments.length <= 16, '花字字幕分段需有 1–16 项');
+      check(caption.segments.every(segment =>
+        label(segment.text) && integer(segment.at, caption.from, caption.to - 1) &&
+        (segment.tone === undefined || ['normal', 'accent', 'alert'].includes(segment.tone)) &&
+        (segment.emphasisAt === undefined ||
+          integer(segment.emphasisAt, segment.at, caption.to - 1))), '花字分段时间或强调状态无效');
+      check(caption.segments.map(segment => segment.text).join('') === caption.text,
+        '花字分段合并文字必须与字幕一致');
+      check(caption.segments.every((segment, idx) =>
+        idx === 0 || segment.at >= caption.segments[idx - 1].at), '花字分段 cue 必须单调');
+    }
     end = caption.to;
   });
   audio.forEach(track => {

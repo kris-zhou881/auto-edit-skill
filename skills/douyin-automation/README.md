@@ -6,7 +6,7 @@
 
 新项目默认选择 Remotion 做正式视频，不再强制进入桌面剪映。制作全过程请读 [无人值守生产流程](references/autonomous-production.md)。输入“用 $douyin-automation 做下一条视频”即可自动选题；如指定题材则直接开工。成片输出 视频-待人工发布.mp4、Remotion 可编辑工程、字幕、封面、发布文案和可复核报告。**Skill 永远不操作平台账号、不发布、不上传草稿。**
 
-执行前运行 python3 scripts/doctor.py 检查环境。macOS 离线中文配音可运行 python3 scripts/synthesize_voice.py 口播.txt 项目目录/remotion/public/voice.wav；若未安装中文语音或声音生硬，须换有授权的可用配音方案并做音频 QA。实际视频工程运行 python3 scripts/render_autonomous.py init 项目目录，填入实录和配音后运行 python3 scripts/render_autonomous.py render 项目目录 --dry-run 做硬门禁预检，再运行正式 render。用户有意选择剪映时才启用旧版剪映分支。
+执行前运行 python3 scripts/doctor.py 检查环境。中文口播默认使用 Qwen3-TTS MLX：安装 mlx-audio 与 soundfile 后执行 python3 scripts/synthesize_voice.py 口播.txt 项目目录/remotion/public/voice.wav --voice Uncle_Fu。正式成片禁止 macOS say 等系统朗读。Remotion 直接输出描边、阴影、弹性入场和重点词同步强调的动态花字；SRT 只作为辅助文件，不允许用系统字幕样式替代。剪映已验证免费中文音色可作为备选。实际视频工程运行 python3 scripts/render_autonomous.py init 项目目录，填入实录和配音后运行 python3 scripts/render_autonomous.py render 项目目录 --dry-run 做硬门禁预检，再运行正式 render。用户有意选择剪映时才启用旧版剪映分支。
 
 ## 安装
 
