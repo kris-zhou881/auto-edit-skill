@@ -1,5 +1,7 @@
 # GitHub 高星 AI Skill 动画制作
 
+> V2 无人值守模式优先读 [无人值守流程](autonomous-production.md)：Remotion 直接导出最终 MP4，剪映不再是强制步骤，用户只负责发布。以下送剪映分轨指引仅供显式选择旧剪映兼容分支时使用。
+
 适用于把 GitHub 上的 AI Skill 做成抖音竖屏短视频。先读 [抖音留存优先规则](douyin-retention.md) 与 [技术讲解流程](technical-explainer.md)，再按下述动效流程制作。沿用现有项目清单、真实证据占比、素材权限、剪映交付和技术质检规则。一般节目继续使用原流程。
 
 ## 从口播到镜头
@@ -11,7 +13,7 @@
 
 ## 选引擎与出预览
 
-- 默认 Remotion。沿用 [包内 Remotion 指南](../modules/remotion-motion-graphics/SKILL.md)，使用 `useCurrentFrame`、插值和可定位时间轴；录屏只在有阅读价值时轻推。可从 `templates/remotion/` 起步，或复用原项目可重现的 Remotion 工程。核对版本、运行条件和实际使用许可。
+- 默认 Remotion。流程/信息流镜头可设置 type="flow"，用 nodes（id、label、x、y、at）定义 2–8 个分帧出现的节点，并以 edges（from、to、at）让连线按帧长出、数据点沿线移动；不要用虚构因果关系。实际成片必须和真实录屏融合，真实证据独占时长严格超过 50%。沿用 [包内 Remotion 指南](../modules/remotion-motion-graphics/SKILL.md)，使用 `useCurrentFrame`、插值和可定位时间轴；录屏只在有阅读价值时轻推。可从 `templates/remotion/` 起步，或复用原项目可重现的 Remotion 工程。核对版本、运行条件和实际使用许可。
 - 有可复用的 HTML/CSS 动画结构，或 Remotion 环境/许可不适合当期时可选 HyperFrames。先查 [官方快速入门](https://hyperframes.heygen.com/quickstart) 和当前 CLI，使用本地可定位动画，按 `lint → preview → render` 实跑，再用同一口播时间轴、字幕、音效及抽帧标准核对。工程和输出都留在同一个项目目录。合适时用 Canvas、Motion Canvas、Manim 或同类逐帧引擎，记录实测原因和结果。FFmpeg 适合编解码、复用素材和检测。
 - Imagegen 用于许可明确的封面、插画、概念视觉和背景。真实产品结果、代码、字幕和图表数字由实录或代码制作。
 - 先试剪 10–15 秒，试剪片段开头仍严格执行 0–2 秒钩子、2–5 秒兑现，挑能覆盖「结果/代码 → 转场 → 下一镜」的片段；预览用实际旁白与逐句字幕。结合原画面及手机尺寸检查。复杂风格先比较关键帧或短样，按当前已定审美和授权选择。失败就定位镜头、动作、节奏或引擎问题后复试。
@@ -23,7 +25,7 @@
 - 把演示 `motion-timeline.json` 换成当期时间轴，调整 `animation.jsx` 的场景和主题。样例适用于端到端校验和代码镜头，成片按取证内容决定画面；复杂节点图、共享元素、局部遮挡和混音包络按需扩展，别用样例重复填充。
 - 时间轴采用全局整数帧和左闭右开区间；以 `round(秒 × fps)` 统一量化全部边界。设置 `fps`、总帧 `duration`、连续 `shots`、不重叠 `captions` 和可叠加 `audio`。技审仍使用 `technical-timeline.json`（秒），从锁定的动作与镜头帧回写，保留 `beat_id`、`asset_id`、证据来源和状态。
 - 镜头支持代码行揭示、图片和静音录屏；`source` 是画面证据说明，`sourceStart` 是录屏入点，`camera.from/to` 控制缓动时间，`x/y/scale` 控制终点。 `transition` 是入镜遮罩转场帧数，0 直接切。 `lines[].at` 和 `captions[].emphasisAt` 对齐实际语义落点。音轨每项写 `role, file, from, to, gain`，可在同一帧布置动作音效，并保留原始独立素材。默认音轨增益为各项显式数值；需要压低/恢复音乐时剪映分轨处理，或在代码里写增益曲线。
-- 从项目根目录运行 `npm ci`、`npm run captions`、`npm run render -- 动画预览.mp4` 和 `npm run picture -- 无字画面.mp4`。可先用 `npm run studio` 预览；缺 Chromium 时用实际 Chrome 路径传入 `--browser-executable`。字幕输出默认 `字幕.srt`，再校时可用 `npm run captions -- 字幕-v2.srt`；预览按口播时间跟随并强调，SRT 只保留文本及时间码。无字画面供剪映重做字幕与混音，从第 0 帧放入无字画面和字幕，把独立音频按时间轴各自的 `from` 放入对应分轨并在 `to` 前结束，逐个核对关键落点，再由剪映导出。剪映无可用资源时保留 Remotion 样片与工程，并按原规则标明总装阻塞。用户若明确要求最终由代码引擎导出，沿用原 `engine_override` 流程，记录真实引擎和导出依据。
+- 旧兼容路径可从项目根目录运行 `npm ci`、`npm run captions`、`npm run render -- 动画预览.mp4` 和 `npm run picture -- 无字画面.mp4`。无人值守新路径使用 `python3 scripts/render_autonomous.py init <项目目录>`、`python3 scripts/render_autonomous.py render <项目目录> --dry-run` 和正式 `render`；必须提供真实的 voice 音轨及带来源、权属和身份的实录画面。可先用 `npm run studio` 预览；缺 Chromium 时用实际 Chrome 路径传入 `--browser-executable`。字幕输出默认 `字幕.srt`，再校时可用 `npm run captions -- 字幕-v2.srt`；预览按口播时间跟随并强调，SRT 只保留文本及时间码。无字画面供剪映重做字幕与混音，从第 0 帧放入无字画面和字幕，把独立音频按时间轴各自的 `from` 放入对应分轨并在 `to` 前结束，逐个核对关键落点，再由剪映导出。剪映无可用资源时保留 Remotion 样片与工程，并按原规则标明总装阻塞。用户若明确要求最终由代码引擎导出，沿用原 `engine_override` 流程，记录真实引擎和导出依据。
 
 ## 验证
 
