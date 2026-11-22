@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "project": {
     "name": "示例项目",
     "platforms": [
@@ -85,7 +85,7 @@
   },
   "editing": {
     "status": "not_started",
-    "engine": "jianying_desktop",
+    "engine": "remotion",
     "render_path": null,
     "editable_project_path": null,
     "technical_qa": {
@@ -114,7 +114,13 @@
       "checks": {},
       "render_sha256": null
     },
-    "rework_log": []
+    "rework_log": [],
+    "automated_review": {
+      "status": "not_run",
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": null
+    }
   },
   "delivery": {
     "status": "pending",
@@ -123,6 +129,7 @@
     "limitations": [
       "模板文件，不是已制作视频"
     ],
-    "cover_title": ""
+    "cover_title": "",
+    "manual_publish_only": true
   }
 }
