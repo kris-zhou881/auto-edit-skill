@@ -107,10 +107,19 @@ def render(project, dry_run=False, skip_install=False):
          "-i", str(video), "-vf", "fps=1,scale=540:-1", "-frames:v", "120",
          str(images / "%04d.jpg")], workspace)
     shutil.copy2(workspace / "字幕.srt", delivery / "字幕.srt")
+    scan = subprocess.run(["ffmpeg", "-nostdin", "-hide_banner", "-loglevel", "info",
+                           "-i", str(video), "-an", "-vf",
+                           "blackdetect=d=0.2:pic_th=0.98:pix_th=0.10,freezedetect=n=-60dB:d=1.5",
+                           "-f", "null", "-"], cwd=workspace, capture_output=True, text=True)
+    if scan.returncode:
+        raise GateError("黑屏/冻结检测无法完整执行")
+    possible_black = "black_start:" in scan.stderr
+    possible_frozen = "freeze_start:" in scan.stderr
     machine = {"rendered_at": datetime.now(timezone.utc).isoformat(),
                "engine": "remotion", "sha256": hashlib.sha256(video.read_bytes()).hexdigest(),
                "video_path": str(video), "has_audio": audio, "duration_seconds": seconds,
-               "timeline": info, "machine_status": "passed",
+               "timeline": info, "machine_status": "needs_review" if (possible_black or possible_frozen) else "passed",
+               "possible_black": possible_black, "possible_frozen": possible_frozen,
                "visual_review": "not_run", "audio_review": "not_run",
                "manual_publish_only": True, "published": False,
                "note": "抽帧和 ffprobe 不是观感或事实审查；应真实查看/听取导出视频。"}
