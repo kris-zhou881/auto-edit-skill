@@ -20,4 +20,4 @@ function timestamp(frame) {
 const srt = timeline.captions.map(({from, to, text}, index) =>
   `${index + 1}\n${timestamp(from)} --> ${timestamp(to)}\n${text.trim()}\n`).join('\n');
 writeFileSync(process.argv[2] ?? '字幕.srt', srt, {flag: 'wx'});
-console.log(`已检查 ${timeline.shots.length} 个镜头，导出 ${timeline.captions.length} 条字幕。`);
+console.log(`已检查 ${timeline.shots.length} 个镜头，导出 ${timeline.captions.length} 条字幕（花字由 Remotion 视频内嵌生成，SRT 仅用于辅助编辑）。`);
