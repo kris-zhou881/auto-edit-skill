@@ -37,6 +37,21 @@ export function validateTimeline(timeline) {
         check(integer(line.at, prior + 1, to - 1) && typeof line.text === 'string', `${where}代码行必须按帧排序`);
         prior = line.at;
       });
+    } else if (type === 'flow') {
+      check(Array.isArray(shot.nodes) && shot.nodes.length >= 2 &&
+        shot.nodes.length <= 8, `${where}流程图需有 2–8 个节点`);
+      const ids = new Set();
+      for (const node of shot.nodes ?? []) {
+        check(label(node.id) && !ids.has(node.id) && label(node.label) &&
+          inRange(node.x, 110, 690) && inRange(node.y, 80, 610) &&
+          integer(node.at, from, to - 1), `${where}流程节点无效`);
+        ids.add(node.id);
+      }
+      check(Array.isArray(shot.edges), `${where}流程关系缺失`);
+      for (const edge of shot.edges ?? []) {
+        check(ids.has(edge.from) && ids.has(edge.to) && edge.from !== edge.to &&
+          integer(edge.at, from, to - 1), `${where}流程连线无效`);
+      }
     } else {
       check(['image', 'video'].includes(type) && localFile(shot.file), `${where}素材类型或路径无效`);
       if (type === 'video') check(integer(shot.sourceStart ?? 0, 0, Number.MAX_SAFE_INTEGER), `${where}录屏入点无效`);
