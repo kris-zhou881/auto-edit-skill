@@ -58,11 +58,18 @@ class CreativeGatesTests(unittest.TestCase):
         d=mock_complete();d['director']['shots'][0]['opening_result']=False
         self.assertTrue(validate_manifest(d,stage='director'))
 
-    def test_engine_fallback_requires_user_choice(self):
+    def test_remotion_default_requires_real_autonomous_review_at_final(self):
         d=mock_complete();d['editing']['engine']='remotion'
-        self.assertTrue(validate_manifest(d,stage='edit'))
-        d['editing']['engine_override']=dict(engine='remotion',reason='用户指定',user_instruction='本期用Remotion')
+        d['editing']['preflight']['resources']=[r for r in d['editing']['preflight']['resources'] if r['kind'] in ('voice','caption')]
+        d['delivery'].update(manual_publish_only=True,published=False)
         self.assertEqual(validate_manifest(d,stage='edit'),[])
+        self.assertTrue(any('自动审查' in e or '音画' in e for e in validate_manifest(d,stage='final')))
+        d['editing']['automated_review']=dict(status='passed',reviewer='Codex 实际音画复核',reviewed_at=NOW,evidence='00:00-00:03 口播与画面内容同步')
+        self.assertEqual(validate_manifest(d,stage='final'),[])
+
+    def test_unknown_engine_requires_explicit_choice(self):
+        d=mock_complete();d['editing']['engine']='other_engine'
+        self.assertTrue(validate_manifest(d,stage='edit'))
 
     def test_resources_need_free_status_license_time_and_operation_evidence(self):
         for mutation in ['missing','paid','license','time','operation']:
