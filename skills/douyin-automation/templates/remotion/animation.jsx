@@ -46,6 +46,42 @@ function Code({shot, frame}) {
   );
 }
 
+function Flow({shot, frame}) {
+  const nodes = shot.nodes ?? [];
+  const edges = shot.edges ?? [];
+  const byId = Object.fromEntries(nodes.map(n => [n.id, n]));
+  return <div style={{height: 690, position: 'relative', background: '#202a32', borderRadius: 18,
+    overflow: 'hidden', border: '2px solid #354451'}}>
+    <svg width="100%" height="100%" viewBox="0 0 800 690" style={{position: 'absolute', inset: 0}}>
+      {edges.map((edge, i) => {
+        const a = byId[edge.from], b = byId[edge.to];
+        if (!a || !b) return null;
+        const p = ease(frame, edge.at, edge.at + Math.round(fps * 0.36));
+        const ex = a.x + (b.x - a.x) * p, ey = a.y + (b.y - a.y) * p;
+        const phase = p > 0 ? ((frame - edge.at) % Math.max(1, fps)) / Math.max(1, fps) : 0;
+        return <g key={i}>
+          <line x1={a.x} y1={a.y} x2={ex} y2={ey} stroke="#efb979" strokeWidth="5" strokeLinecap="round" />
+          {p > 0 && <circle cx={a.x + (ex-a.x)*phase} cy={a.y + (ey-a.y)*phase}
+            r="8" fill="#fff1d0" />}
+        </g>;
+      })}
+    </svg>
+    {nodes.map(node => {
+      const p = ease(frame, node.at, node.at + Math.round(fps * 0.25));
+      return <div key={node.id} style={{position: 'absolute',
+        left: `calc(${node.x / 800 * 100}% - 96px)`,
+        top: `calc(${node.y / 690 * 100}% - 37px)`,
+        width: 192, minHeight: 74, borderRadius: 16, background: '#30434c',
+        border: '2px solid #9bc9bc', color: '#fff8ec',
+        opacity: p, transform: `scale(${0.8 + .2*p})`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        textAlign: 'center', fontSize: 26, fontWeight: 730, padding: 9}}>
+        {node.label}
+      </div>;
+    })}
+  </div>;
+}
+
 function Readout({values, at, frame}) {
   return <div style={{display: 'flex', gap: 30, marginTop: 50, paddingTop: 22,
     borderTop: `2px solid ${theme.muted}`, fontFamily: theme.mono}}>
@@ -68,7 +104,8 @@ function Shot({shot, frame, frozen = false}) {
       <div style={{borderRadius: 18, overflow: 'hidden'}}>
         <div style={{transform: camera ? `translate(${camera.x * progress}px, ${camera.y * progress}px)
           scale(${1 + (camera.scale - 1) * progress})` : undefined}}>
-          {shot.type === 'code' ? <Code shot={shot} frame={frame} /> : (
+          {shot.type === 'code' ? <Code shot={shot} frame={frame} /> :
+           shot.type === 'flow' ? <Flow shot={shot} frame={frame} /> : (
             <div style={{position: 'relative', height: 690}}>
               {shot.type === 'image'
                 ? <Img src={staticFile(shot.file)} style={{width: '100%', height: '100%', objectFit: 'contain'}} />

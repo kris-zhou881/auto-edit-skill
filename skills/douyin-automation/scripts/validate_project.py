@@ -286,7 +286,13 @@ def validate_manifest(data: Any, root: Path | None = None, check_files: bool = F
         human = editing.get("human_review", {})
         if not _is_object(technical) or technical.get("status") != "passed":
             errors.append("editing.status=qa_pass 需要技术 QA 通过")
-        if not _is_object(human) or human.get("status") != "passed":
+        if editing.get("engine") == "remotion":
+            automated = editing.get("automated_review", {})
+            if not _is_object(automated) or automated.get("status") != "passed":
+                errors.append("Remotion 无人值守成片需要真实音画自动审查，不能只靠机器预检")
+            elif not _has_text(automated.get("reviewer")) or not _has_timezone(automated.get("reviewed_at")) or not _has_text(automated.get("evidence")):
+                errors.append("自动音画审查缺检查人、时间或实际观察证据")
+        elif not _is_object(human) or human.get("status") != "passed":
             errors.append("editing.status=qa_pass 需要人工完整观看/听声通过")
         elif not _has_text(human.get("reviewer")) or not _has_timezone(human.get("reviewed_at")):
             errors.append("人工 QA 通过必须记录检查人和带时区的检查时间")
@@ -299,6 +305,8 @@ def validate_manifest(data: Any, root: Path | None = None, check_files: bool = F
             errors.append("delivery.status 必须是 pending、ready 或 blocked")
         if delivery.get("status") == "ready" and edit_status != "qa_pass":
             errors.append("delivery.status=ready 需要 editing.status=qa_pass")
+        if delivery.get("manual_publish_only") is True and delivery.get("published") is True:
+            errors.append("本账号只能用户亲自发布，生产 Skill 不允许标记为已发布")
         if delivery.get("published") is True and delivery.get("publish_authorized") is not True:
             errors.append("标记已发布时必须记录 publish_authorized=true")
 

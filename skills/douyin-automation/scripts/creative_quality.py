@@ -98,9 +98,9 @@ def validate_creative(data, stage='auto'):
         return errors
     require(bool(selected) and selected.get('proof_status') == 'ready', '剪辑前选中钩子的真实画面必须就绪')
     engine = editing.get('engine')
-    if engine != 'jianying_desktop':
+    if engine not in ('jianying_desktop', 'remotion'):
         override = obj(editing.get('engine_override'))
-        require(text(engine) and override.get('engine') == engine and all(text(override.get(k)) for k in ('reason', 'user_instruction')), '默认桌面剪映；其他引擎必须记录用户明确选择')
+        require(text(engine) and override.get('engine') == engine and all(text(override.get(k)) for k in ('reason', 'user_instruction')), '未知引擎必须记录用户选择')
     preflight = obj(editing.get('preflight'))
     require(preflight.get('status') == 'passed', '剪辑前实际操作/免费资源检查未通过')
     require(timestamp(preflight.get('checked_at')), '资源检查时间必须带时区')
@@ -118,14 +118,25 @@ def validate_creative(data, stage='auto'):
         for key in ('name', 'license_scope', 'evidence'):
             require(text(resource.get(key)), f'资源缺少 {key}')
         require(timestamp(resource.get('checked_at')), '资源取证时间必须带时区')
-    require({'voice', 'caption', 'transition', 'music', 'sfx'} <= categories, '需检查配音/花字/转场/音乐/音效五类资源')
-    require(editing.get('status') != 'blocked', '剪映受阻，必须报告 blocker/recovery_action 后停止')
+    required_categories = {'voice', 'caption', 'transition', 'music', 'sfx'} if engine == 'jianying_desktop' else {'voice', 'caption'}
+    require(required_categories <= categories, '缺少当前引擎必要配音与字幕资源核验')
+    if engine == 'remotion':
+        require(text(preflight.get('operation_evidence')), 'Remotion 必须有本期实际渲染预检证据')
+    require(editing.get('status') != 'blocked', '渲染受阻，必须报告 blocker/recovery_action 后停止')
     if level < 3:
         return errors
     require(editing.get('status') == 'qa_pass', '最终交付需要 editing.status=qa_pass')
-    require(text(editing.get('export_evidence')), '缺少实际软件导出证据')
+    require(text(editing.get('export_evidence')), '缺少实际引擎导出证据')
     review = obj(editing.get('creative_review'))
     require(review.get('status') == 'passed', '创意质量未通过，需返工并重新看听')
+    if engine == 'remotion':
+        automated = obj(editing.get('automated_review'))
+        require(automated.get('status') == 'passed' and text(automated.get('reviewer'))
+                and timestamp(automated.get('reviewed_at')) and text(automated.get('evidence')),
+                'Remotion 无人值守模式必须确实检查当前音画并记录 automated_review，不能靠机器检查伪造通过')
+        delivery = obj(data.get('delivery'))
+        require(delivery.get('manual_publish_only') is True and delivery.get('published') is False,
+                '该账号只允许用户本人发布')
     require(text(review.get('reviewer')) and timestamp(review.get('reviewed_at')), '创意验收需检查人和带时区的时间')
     require(text(review.get('render_path')) and review.get('render_path') == editing.get('render_path'), '创意验收必须对应当前导出文件')
     raw_digest = review.get('render_sha256')

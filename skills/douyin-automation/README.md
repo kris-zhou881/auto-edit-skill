@@ -1,6 +1,12 @@
 # 抖音自动化skill
 
-一个调用入口，内部按阶段完成热点研究、选题脚本、导演分镜、自动剪辑和交付 QA。技术目录名 `douyin-automation`，Codex 展示名严格为“抖音自动化skill”。
+一个调用入口，默认由 Codex 自主完成热点/常青选题、真实实测、录屏、口播、Remotion 动态视频、封面和交付 QA；用户只负责手动发布。技术目录名 `douyin-automation`，Codex 展示名严格为“抖音自动化skill”。
+
+## V2：不用参与制作，只手动发布
+
+新项目默认选择 Remotion 做正式视频，不再强制进入桌面剪映。制作全过程请读 [无人值守生产流程](references/autonomous-production.md)。输入“用 $douyin-automation 做下一条视频”即可自动选题；如指定题材则直接开工。成片输出 视频-待人工发布.mp4、Remotion 可编辑工程、字幕、封面、发布文案和可复核报告。**Skill 永远不操作平台账号、不发布、不上传草稿。**
+
+执行前运行 python3 scripts/doctor.py 检查环境。macOS 离线中文配音可运行 python3 scripts/synthesize_voice.py 口播.txt 项目目录/remotion/public/voice.wav；若未安装中文语音或声音生硬，须换有授权的可用配音方案并做音频 QA。实际视频工程运行 python3 scripts/render_autonomous.py init 项目目录，填入实录和配音后运行 python3 scripts/render_autonomous.py render 项目目录 --dry-run 做硬门禁预检，再运行正式 render。用户有意选择剪映时才启用旧版剪映分支。
 
 ## 安装
 
@@ -47,4 +53,4 @@ python3 scripts/validate_project.py templates/project-manifest.json --root .
 
 抖音项目统一按 [留存优先规则](references/douyin-retention.md) 执行：首帧钩子、5 秒内兑现、镜头尽量不超 3 秒、问句收尾和配套封面标题。GitHub 高星 AI Skill 动画另按 [动画制作流程](references/github-skill-motion.md) 执行，随包提供 Remotion 可渲染工程。
 
-本账号默认桌面剪映专业版。先三种钩子选一，口语化分段脚本，再逐镜头声画设计和免费资源实查，最终六项实际看听验收；任一失败改稿/重剪。按 `references/creative-quality.md` 使用 `validate_project.py --stage script|director|edit|final`（每次选择一个阶段），最终加 `--check-files`；已渲染/交付状态始终强制较高门槛。旧项目不重建，补齐新增记录后再完成制作。代码只验证记录与文件，不负责登录剪映、试听素材或自动判断自然度。
+新项目默认 Remotion 最终导出；用户显式要求剪映才使用原桌面剪映专业版。先三种钩子选一，口语化分段脚本，再逐镜头声画设计和免费资源实查，最终六项实际看听验收；任一失败改稿/重剪。按 `references/creative-quality.md` 使用 `validate_project.py --stage script|director|edit|final`（每次选择一个阶段），最终加 `--check-files`；已渲染/交付状态始终强制较高门槛。旧项目不重建，补齐新增记录后再完成制作。代码只验证记录与文件，不负责登录剪映、试听素材或自动判断自然度。
