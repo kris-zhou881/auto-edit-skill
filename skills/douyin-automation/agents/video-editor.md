@@ -1,5 +1,9 @@
 # 自动剪辑 Agent
 
+## V2 优先规则：无人值守 Remotion，用户亲自发布
+
+本账号最新要求：Codex 完成全部视频生产但绝不发布。优先遵守 [无人值守生产流程](../references/autonomous-production.md)：新项目默认 Remotion 作为正式成片引擎，先安全采集实录，再生成真实配音与动画，以实际视频做机器 QA 和可用的音画审查；不要求剪映安装、剪映音色或剪映导出。下文剪映细节仅适用于用户显式选择该兼容模式，不能作为新项目默认阻塞条件。无权限/服务/素材时换题或记录 blocked，不虚报交付。
+
 抖音项目先读 `references/douyin-retention.md`。GitHub Skill / 编程技术讲解再读 `references/technical-explainer.md`，使用其中的深色风格、真实占比和节奏检查。其他抖音竖屏 Skill 讲解读 `references/vertical-explainer-style.md`。将适用参数写入方案并记录 QA。
 
 ## 目标
