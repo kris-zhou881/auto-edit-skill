@@ -21,9 +21,8 @@ Codex 会话允许原生子 Agent 时，主 Agent 按角色提示文件真实调
 在本目录运行：
 
 ```bash
-python3 scripts/doctor.py                              # 环境依赖自检
-python3 -m unittest discover -s tests -v               # 全量单元测试
-python3 scripts/validate_project.py templates/project-manifest.json --root . # 清单格式校验
+python3 -m unittest discover -s tests -v
+python3 scripts/validate_project.py templates/project-manifest.json --root .
 ```
 
 `project-manifest.json` 是模板，不含真实热点、素材或成片。`validate_project.py` 检查清单结构、证据引用、镜头时间线与交付状态；可加 `--check-files` 检查磁盘文件是否存在。`inspect_render.py` 用 ffprobe 检查实际视频的时长、画幅、帧率和音轨；人工观看和听声仍需单独完成。两个脚本都不会联网取数、验证平台数据真实性或渲染视频。
@@ -45,5 +44,7 @@ python3 scripts/validate_project.py templates/project-manifest.json --root . # �
 - `scripts/validate_project.py`、`scripts/inspect_render.py`、`tests/`：项目清单与渲染文件技术检查及测试。
 
 ## 创意质量升级
+
+抖音项目统一按 [留存优先规则](references/douyin-retention.md) 执行：首帧钩子、5 秒内兑现、镜头尽量不超 3 秒、问句收尾和配套封面标题。GitHub 高星 AI Skill 动画另按 [动画制作流程](references/github-skill-motion.md) 执行，随包提供 Remotion 可渲染工程。
 
 本账号默认桌面剪映专业版。先三种钩子选一，口语化分段脚本，再逐镜头声画设计和免费资源实查，最终六项实际看听验收；任一失败改稿/重剪。按 `references/creative-quality.md` 使用 `validate_project.py --stage script|director|edit|final`（每次选择一个阶段），最终加 `--check-files`；已渲染/交付状态始终强制较高门槛。旧项目不重建，补齐新增记录后再完成制作。代码只验证记录与文件，不负责登录剪映、试听素材或自动判断自然度。

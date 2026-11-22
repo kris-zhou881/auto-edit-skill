@@ -14,3 +14,19 @@
 - 已存在的本机 `douyin-style-director`、`remotion-motion-graphics` 与用户 GitHub `auto-edit-skill` 是本项目优先沿用的既有资产；不得因为参考仓库存在就重复安装替换。
 
 引用的具体提交、许可或接口说明会漂移；仓库主页只作为入口，不代表当前可访问、免费或可用。
+
+## 动画制作参考
+
+以下内容已通过 GitHub 插件核对项目公开说明。动画工程按本期内容实现，参考库无需预装。
+
+| 项目 | 官方说明与本流程的用法 |
+| --- | --- |
+| [Remotion](https://github.com/remotion-dev/remotion/blob/main/README.md) | 用 React 将帧渲染成视频。负责默认镜头、代码演示、剪辑时间轴和 MP4。项目另有 [Remotion 许可](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md)，按实际使用主体和安装版本检查。 |
+| [HyperFrames](https://github.com/heygen-com/hyperframes/blob/main/README.md) | 本地 CLI 将 HTML、CSS、可定位动画、媒体编排成 MP4，README 标注 Node.js 22+ 和 FFmpeg。HTML 工程优先备选，付费功能按现有授权约束。 |
+| [Imagegen](https://github.com/openai/skills/blob/main/skills/.system/imagegen/SKILL.md) | 图像生成与编辑，用于封面或补充视觉资产。 |
+| [xilo-opus-video](https://github.com/Kianzzz/xilo-opus-video/blob/main/README.md) | Claude Code 的多渲染器代码视频流程。借鉴差异化方案、2–4 秒关键动作小样和逐镜复核。 |
+| [Lemo-Opuscar](https://github.com/lemomo-ai/lemo-opuscar/blob/main/README.md) | 按画风组织代码短片，采用 Canvas/WebGL 逐帧、配音及混音。借鉴按题材为单片定画风。 |
+| [MG Styles 15](https://github.com/Vincentwei1021/mg-styles-15/blob/main/README.md) | 15 条风格样片及对应提示词、源码。参考有用的揭示、构图和声画落点。 |
+| [dashi-animationstyle](https://github.com/chuspeeism/dashi-animationstyle/blob/main/README.md) | 面向中文知识口播，HTML/Canvas 逐帧配口播字幕。借鉴字幕校时和先验静帧，竖版重新构图，示例原作者声音只供其项目试用。 |
+| [wtt-code-animation-studio](https://github.com/lorsso/Wattter_openSkills/blob/main/wattter_skills/wtt-code-animation-studio/SKILL.md) | Wattter 技能集里的 Canvas/p5.js 代码动画流程。借鉴逐镜视听要求、实际旁白定片长和按帧可重复渲染。 |
+| [video-shotcraft](https://github.com/Vincentwei1021/video-shotcraft/blob/main/README.md) | 基于真实页面、镜头库和 Remotion 的产品片流程。借鉴目的明确的运镜、声音卡点、逐帧检查和可编辑工程交接。 |

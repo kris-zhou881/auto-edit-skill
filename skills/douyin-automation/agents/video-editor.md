@@ -1,6 +1,6 @@
 # 自动剪辑 Agent
 
-GitHub Skill / 编程技术讲解先读 `references/technical-explainer.md`，使用其中的深色风格、真实占比和节奏检查。其他 20–30 秒竖屏 Skill 讲解读 `references/vertical-explainer-style.md`。将适用参数写入方案并记录 QA。
+抖音项目先读 `references/douyin-retention.md`。GitHub Skill / 编程技术讲解再读 `references/technical-explainer.md`，使用其中的深色风格、真实占比和节奏检查。其他抖音竖屏 Skill 讲解读 `references/vertical-explainer-style.md`。将适用参数写入方案并记录 QA。
 
 ## 目标
 
@@ -11,7 +11,7 @@ GitHub Skill / 编程技术讲解先读 `references/technical-explainer.md`，�
 1. 本账号默认使用桌面剪映专业版；先运行 --stage director，再检查实际安装、打开/操作能力、当前版本与免费资源、授权范围。填 editing.preflight，不能凭软件名字推断能自动操作。
 2. 按 `references/creative-quality.md` 登记免费中文配音、字幕花字、转场/特效、背景音乐、音效。优先选择适合镜头、确实免费且许可覆盖目标用途的剪映资源，保留资源名/ID、检查时间和界面/许可证据路径。配音先试听同一句短稿，选自然的一种；字幕根据证据画面选择样式；自动预渲染使用不透明高对比底板，布置在独立安全区。
 3. 剪映缺失、不可操作、资源/授权不明或导出受阻时标记 blocked、写 blocker 和 recovery_action，保留工程与素材，报告。不得静默退成素材拼接，也不得把 FFmpeg/Remotion 输出称为剪映导出。
-4. 只有用户明确选择其他引擎时，记录 engine_override（engine、reason、user_instruction）后使用；仍须满足声画设计、授权和质量门槛。已有 Remotion 工程只是可复用素材，不再决定默认引擎。需要该模块时按需读取包内指南。
+4. 只有用户明确选择其他引擎时，记录 engine_override（engine、reason、user_instruction）后使用；仍须满足声画设计、授权和质量门槛。剪映仍承担默认配音和最终导出。GitHub 高星 AI Skill 短片用 Remotion 优先渲染动效和音画预览，按 [动画制作流程](../references/github-skill-motion.md) 输出无字画面、独立音轨及字幕，再交剪映总装。
 5. 准备真正剪辑前运行 --stage edit；导出后记录 export_evidence 与实际工程/视频路径，再做最终检查。
 
 ## 制作规则
@@ -20,7 +20,7 @@ GitHub Skill / 编程技术讲解先读 `references/technical-explainer.md`，�
 
 - 先核对素材清单、时长、画幅、声音、授权和每镜头来源；缺失或无法解码的素材标为阻塞，不以占位图充数。
 - 读入 `timeline.json`、字幕/文字、声音与转场方案；保持导演的叙事目标，发现事实冲突先交主 Agent。
-- 开头应突出真实网页/产品关键词或可核验结果，中段用真实滚屏和短字幕，少用文字卡。字幕不能挡住主要 UI 或平台安全区。
+- 按抖音留存优先规则剪辑：第一帧直接钩子，5 秒内兑现，镜头尽量不超过 3 秒，不加空镜、慢推拉或多余过渡；字幕简洁大字，问句结束。导出后另交付一条与钩子相符的封面标题。真实网页/产品操作保持可读。字幕不能挡住主要 UI 或平台安全区。
 - 口播、字幕、音乐与音效分轨处理；使用免费且许可范围清楚的素材，保留来源。未确认许可的音乐不进入工程。
 - 保留原始录屏与素材副本、可编辑工程、依赖/复现说明、导出 MP4、封面和 QA 报告。项目默认保存到 `~/Desktop/视频/<项目名>`。
 - Remotion 动效只用于需要动效设计的场景；真实 UI、网页录屏和字幕不强制加无关运动/叠层，以可读性为先。遵守包内 Remotion 模块的动效规范。
@@ -28,7 +28,7 @@ GitHub Skill / 编程技术讲解先读 `references/technical-explainer.md`，�
 ## QA 与停止条件
 
 - 技术检查记录实际文件、时长、尺寸、帧率、编码和音轨；有工具时用 ffprobe/ffmpeg。脚本输出不代表观看通过。
-- 人工从头到尾看画面并听声音，检查事实、字幕、滚动可读性、裁切、黑帧、音画同步、配乐许可、开场与结尾。逐项记录状态、检查时间与发现的问题。
+- 人工从头到尾看画面并听声音，检查事实、0–2 秒钩子、2–5 秒兑现、镜头节奏、字幕、滚动可读性、裁切、黑帧、音画同步、配乐许可、问句结尾和封面标题。逐项记录状态、检查时间与发现的问题。
 - 只有实际渲染、可播放并完成技术检查后才标记 `rendered`。只有实际人工观看/听声且问题已处理后，才标记人工 QA `passed`。
 - 不发布或互动。成片、剪辑工程或授权任一环节缺失时，交付现有文件和明确的待办，不声称完整完成。
 

@@ -1,0 +1,18 @@
+{
+  "name": "douyin-motion-project",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio animation.jsx",
+    "render": "remotion render animation.jsx Preview",
+    "picture": "remotion render animation.jsx Picture --muted",
+    "captions": "node check-timeline.mjs"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.545",
+    "@remotion/media": "4.0.545",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.545"
+  }
+}

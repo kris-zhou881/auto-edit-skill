@@ -24,7 +24,9 @@ All components assume `useCurrentFrame()` / `useVideoConfig()` from remotion.
 
 ---
 
-## 1. Premium entrance (fade + rise + scale)
+## 1. Optional entrance for secondary elements (fade + rise + scale)
+
+Use only after the opening hook and when an item needs to enter. Never delay or fade the hook on frame one.
 ```tsx
 const Entrance: React.FC<{delay?: number; children: React.ReactNode}> =
 ({ delay = 0, children }) => {
@@ -133,7 +135,9 @@ const Vignette: React.FC = () => (
 );
 ```
 
-## 8. Ken Burns — every still, no exceptions
+## 8. Optional Ken Burns for decorative stills
+
+Use only when movement helps explain the shot. Keep evidence frames and readable UI steady. Avoid slow camera drift.
 ```tsx
 const KenBurns: React.FC<{src: string; zoomTo?: number}> = ({ src, zoomTo = 1.1 }) => {
   const frame = useCurrentFrame();
@@ -183,14 +187,18 @@ const exitO = interpolate(frame, [durationInFrames - 12, durationInFrames - 2],
 ```
 Apply to every visible element, or to a scene wrapper.
 
-## 12. Idle breathing (elements on screen >2s)
+## 12. Optional idle breathing
+
+Avoid for Douyin unless a small motion communicates a real state change.
 ```tsx
 const breathe = 1 + Math.sin(frame / 22) * 0.015;          // scale
 const float = Math.sin(frame / 30) * 3;                     // translateY px
 const drift = interpolate(frame, [0, 300], [0, -20]);       // slow parallax
 ```
 
-## 13. Parallax (3 layers, instant depth)
+## 13. Optional parallax
+
+Use only for an explanatory reveal, never as a persistent atmosphere effect.
 ```tsx
 const x = interpolate(frame, [0, 90], [0, -120], { easing: theme.ease.inOut });
 <Bg style={{ transform: `translateX(${x * 0.3}px)` }}/>

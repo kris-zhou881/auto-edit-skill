@@ -1,84 +1,38 @@
-# Design Rules — Color, Type, Pacing, Sound, Checklist
+# 竖屏视频的配色、排版和动效检查
 
-## Color system
-One dark (or light) base + ONE hero color + one accent + neutrals. 60/30/10:
-60% base, 30% secondary surfaces, 10% hero. The hero color appears on AT MOST
-one element per frame — it directs the eye.
+抖音项目先读上级 douyin-automation/references/douyin-retention.md。以下配色和字级可按题材取用，场景时长、节奏、BGM、开头、结尾和封面标题一律以抖音留存规则为准。通用 Remotion 样例不代替本期分镜。
 
-Proven palettes (adapt to user's brand if they have one):
-- Dark tech: base #0A0A0F, hero #7C3AED, accent #22D3EE, text #F4F4F5
-- Warm editorial (Claude-like): base #FAF7F2, hero #D97757, ink #1F1E1B
-- Warm premium: base #1A120B, hero #E8A33D, accent #F4E9DA
-- Clean light: base #F7F5F2, ink #1A1A1A + one saturated accent
+## 配色
 
-Glow on the hero element only:
-`boxShadow: 0 0 60px ${hero}66, 0 0 120px ${hero}33` (text: textShadow).
-More than one glowing element per frame = Vegas. Don't.
+每个画面以一种底色为主，最多搭配一种高亮色和一种辅助色。突出色只标示当前要看的信息。深色科技可用底色 #0A0A0F、紫色 #7C3AED、青色 #22D3EE 和浅色文字。暖色编辑可用 #FAF7F2、#D97757 和 #1F1E1B。按本期视觉和素材调整；真实产品界面须保留原色和可读性。
 
-## Typography
-- Hero text: display face (Clash Display, Cabinet Grotesk, General Sans, Satoshi —
-  free on Fontshare; or a Google variable font via @remotion/google-fonts).
-  Weight 600–800, letterSpacing -0.03em, lineHeight 1.05.
-- Reels hero size: 80–140px at 1080 wide. Landscape: 100–160px at 1920.
-- Body/captions: a clean sans (Inter/system) at 400–500, dimmed color.
-- Highlight ONE word per headline: hero color, animated underline, or a pill
-  scaling in behind it 5 frames after the word lands.
-- Numbers: animated counters with tabular-nums (see motion-patterns §9).
+## 字体与字幕
 
-## Scene architecture
-30s Reel structure:
-```
-0.0–1.5s  HOOK    boldest visual + claim. Movement within the FIRST 15 frames.
-1.5–3.0s  CONTEXT one line, one visual, still moving.
-3–22s     BODY    3–4 beats. Each beat: HIT -> hold (15–20 still frames) -> build.
-22–27s    PAYOFF  the result/number/demo. Biggest animation of the video.
-27–30s    CTA     one action, calm, glow on the CTA word.
-```
-- New visual element at least every 90 frames.
-- Holds are a design tool: fast move -> complete stillness -> next move.
-  Constant motion reads amateur; contrast reads expensive.
-- 9:16 safe zone: critical text inside the middle ~75% vertically (platform UI
-  covers top and bottom).
-- 5s logo stings: mark in (0–0.8s) -> wordmark (0.6–1.8s) -> detail/tagline
-  (2–3.5s) -> breathe -> exit (last 0.5s).
+- 竖屏画面的标题可从 80–140px 开始试排。正文和字幕选清楚的无衬线体。
+- 字幕只保留核心短句或关键词，通常一到两行，避免逐字稿、装饰标签和多色花字。
+- 字幕和关键内容留在平台安全区。代码字号先按最终手机尺寸检查，真实界面不为适配模板而遮挡或过度缩放。
+- 数字、功能、界面文字必须来自实测或可靠来源，不能让图像生成模型编写。
 
-## Sound design (50% of perceived quality — never deliver silent unless asked)
-- Every entrance HIT: short whoosh/click starting 2–3 frames BEFORE the visual
-  lands (early feels synced; late feels broken).
-- Transitions: riser into the cut, bass hit ON the cut.
-- Counters: soft tick loop while counting.
-- Music bed at low volume (~0.2–0.3), ducked further under VO.
-- Pick music FIRST when possible; compute framesPerBeat = fps*60/BPM and place
-  cuts on beats.
-- Free SFX sources to suggest: Pixabay, Mixkit, freesound.org. A 10-file kit
-  covers everything: 2 whooshes, 2 clicks, riser, bass hit, shimmer, tick, pop,
-  reverse-swoosh.
+## 节奏与场景
 
-## Asset generation guidance (when user generates images for the video)
-Lock a prompt skeleton, vary only the subject, keep lighting + palette words
-identical across the set, generate at final aspect ratio:
-```
-[subject], cinematic product photography, dark moody studio, [hero color] rim
-lighting, deep shadows, shallow depth of field, 9:16
-```
+- 首帧直接显示真实钩子，0–2 秒没有淡入、片头、Logo 或背景铺垫；2–5 秒兑现核心信息或简单示例。
+- 单镜头尽量不超过 3 秒。用内容进展和真实操作驱动切换，不添加氛围空镜、慢镜头、慢推拉和长过渡。
+- 关键代码、图表和界面有足够阅读时间。镜头超过 3 秒时写明继续观看所需的操作或阅读原因。
+- 允许动作之后短暂停留以读懂结果，不为做节奏而让镜头持续无信息变化。特效和运镜都服务具体视觉判断。
+- 成片以内容需要和实际口播确定时长，不填满固定时间。最后一句旁白为相关问题，问完即收。
 
-## Render settings
-- Masters for upload: `--codec h264 --crf 16` (platforms re-compress; give headroom)
-- Heavy transparency/blur stacks: add `--image-format png`
-- Preview suspicious motion at 0.25x in Remotion Studio — easing flaws invisible
-  at 1x are obvious at quarter speed.
+## 声音
 
-## PRE-DELIVERY CHECKLIST — run against every video before presenting it
-- [ ] Zero linear easing anywhere; every interpolate clamped
-- [ ] Entrances = 2–3 properties, staggered; nothing enters simultaneously
-- [ ] Exits animated, faster than entrances
-- [ ] Every still has Ken Burns; fast moves have motion blur
-- [ ] 5-layer stack present (bg mesh, assets, graphics, grade, grain+vignette)
-- [ ] One hero color, ≤1 hero-colored/glowing element per frame
-- [ ] Display font ≥600 weight on heroes; no default-font hero text
-- [ ] Pixel gaps (not em) between large text blocks
-- [ ] Holds exist: ≥3 moments of stillness
-- [ ] SFX on major hits, cuts on beat (if audio in scope)
-- [ ] Text inside safe zone; nothing touching frame edges
-- [ ] Rendered, frames extracted with ffmpeg, every extracted frame visually
-      inspected, issues fixed, re-rendered, re-inspected
+人声优先。BGM 选短节奏、适合剪辑落点的素材，明显低于人声；避免平缓抒情曲。音效仅放在可见动作或镜头切点，不能抢台词。许可未核实时先不使用音乐或音效。
+
+## 导出前检查
+
+- [ ] 第一帧已有内容和钩子，没有淡入、片头或背景铺垫
+- [ ] 2–5 秒内已兑现核心信息或简单演示
+- [ ] 单镜头尽量不超过 3 秒，超时有具体原因和画面进展
+- [ ] 没有空镜、慢镜头、慢推拉、冗长转场或装饰性持续动效
+- [ ] 字幕短、清楚、与旁白一致，未遮挡证据
+- [ ] 人声清晰，BGM 有节奏且音量受控
+- [ ] 最后一句是具体相关问题，问完后立即收尾
+- [ ] 成片后单独交付一条与钩子和实际内容一致的封面标题
+- [ ] 已抽取并检查开头、切换和结尾的实际画面，修正后重渲染

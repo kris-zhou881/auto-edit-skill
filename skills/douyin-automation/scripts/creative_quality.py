@@ -92,7 +92,8 @@ def validate_creative(data, stage='auto'):
         for key in ('visual_source', 'caption', 'caption_style', 'motion', 'transition', 'music', 'sfx', 'voice_emotion'):
             require(text(shot.get(key)), f'镜头{index + 1}缺少 {key}')
     first = obj(shots[0]) if shots else {}
-    require(first.get('start') == 0 and first.get('opening_result') is True, '前三秒必须从真实结果画面开始')
+    hook_visible = first.get('hook_visible') is True or first.get('opening_result') is True
+    require(first.get('start') == 0 and hook_visible, '第一帧必须直接显示能兑现钩子的真实画面，不能先放片头或背景铺垫')
     if level < 2:
         return errors
     require(bool(selected) and selected.get('proof_status') == 'ready', '剪辑前选中钩子的真实画面必须就绪')

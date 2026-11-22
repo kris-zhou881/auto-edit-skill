@@ -12,6 +12,10 @@ bottleneck — **motion design craft is**. Untrained generation produces linear 
 opacity-only fades, simultaneous entrances, flat colors, and no texture. That is the
 "generic AI video" look. This skill exists to prevent it.
 
+## 抖音留存规则优先
+
+为抖音成片时，先遵守上级 `douyin-automation/references/douyin-retention.md`。首帧直接给钩子，2–5 秒内兑现；不加淡入、开场字幕卡、慢推拉、长停顿或装饰空镜；镜头尽量不超过 3 秒，旁白最后一句为相关问题，成片后另交一条吻合钩子的封面标题。以下通用动画规则按该节奏做取舍，不能因此减慢开头或镜头。
+
 ## Non-negotiable rules (apply to EVERY composition)
 
 1. **Avoid raw linear motion progress.** Drive motion progress with an easing curve or
@@ -19,19 +23,19 @@ opacity-only fades, simultaneous entrances, flat colors, and no texture. That is
    Clamp values at their intended bounds. Use `linearTiming()` only when a transition
    deliberately needs uniform travel.
 2. **Entrances animate 2–3 properties together** (opacity + translateY + scale).
-   A lone fade is forbidden.
-3. **Stagger everything.** Lists, words, rays, cards: 3–6 frame offsets. Nothing
-   enters simultaneously.
+   A lone fade is forbidden. The opening hook for Douyin is already visible on frame one.
+   Do not apply an entrance animation, fade or delay to it.
+3. **Stagger optional entrances.** Lists and secondary items may use 3–6 frame offsets.
+   The first frame hook and tightly connected content can appear together immediately.
 4. **Exits exist and are faster than entrances** (~10 frames vs ~20).
-5. **Use the five-layer stack for designed motion-graphics scenes**, bottom to top:
-   background → assets → graphics/type → color grade → optional grain/vignette. A
-   real screen recording may remain clear and stable; do not add layers that reduce UI
-   readability.
+5. **Use only the layers the shot needs.** Background, graphics and grade are optional.
+   Do not add grain, vignette, glow or atmosphere by default. Keep real screen recordings
+   clear and stable.
 6. **Decorative still images can use Ken Burns.** Keep screenshots, product UI, and
    evidence frames stable unless a purposeful crop/zoom is needed. Every video asset
    uses `<OffthreadVideo>`, never `<Video>`.
-7. **Decorative idle elements may breathe** when it helps the scene. Do not animate
-   real interface content or captions in a way that makes them harder to read.
+7. **Idle animation is optional.** For Douyin, omit it unless it explains a real state
+   change. Never animate real interface content or captions in a way that hurts readability.
 8. **All timing derives from `fps`** via `useVideoConfig()`. No magic frame numbers.
 9. **One theme object** at the top of the project (colors, easings, spring presets,
    fonts). Never inline a hex color or easing in a component.
@@ -42,7 +46,7 @@ opacity-only fades, simultaneous entrances, flat colors, and no texture. That is
 
 ### 默认保存位置
 
-每次做视频，默认把可复用素材和交付文件统一保存到 `~/Desktop/视频`（或用户指定/项目清单配置的输出目录）。包括原始素材的项目副本、录屏、图片和封面、配音和音乐、字幕、可编辑工程及导出的成片。可以按项目建子文件夹。工具先把文件生成到其他位置时，交付前复制到这个目录；剪映导出时优先选择这个目录。临时渲染文件可继续放在工作目录。用户为本次任务指定其他位置时，按本次指定的位置保存。
+每次做视频，默认把可复用素材和交付文件统一保存到 `/Users/luhongxian/Desktop/视频`。包括原始素材的项目副本、录屏、图片和封面、配音和音乐、字幕、可编辑工程及导出的成片。可以按项目建子文件夹。工具先把文件生成到其他位置时，交付前复制到这个目录；剪映导出时优先选择这个目录。临时渲染文件可继续放在工作目录。用户为本次任务指定其他位置时，按本次指定的位置保存。
 
 ### 抖音封面比例
 
@@ -80,8 +84,7 @@ transitions, parallax). Compose scenes from those patterns. For pacing, rhythm,
 typography, color palettes, and sound design rules, read
 `references/design-rules.md`.
 
-Scene rhythm: HIT → hold (15–20 still frames) → build → HIT. Something must move
-in the first 15 frames. Never >90 frames without a new visual element.
+For non-Douyin work, a HIT/hold/build rhythm may fit the subject. For Douyin, the opening hook appears fully on frame one, then receives its payoff within five seconds. Keep most shots at or below three seconds and avoid empty holds.
 
 ### Step 4 — Render
 ```bash

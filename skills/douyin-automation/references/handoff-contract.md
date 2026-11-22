@@ -30,4 +30,4 @@
 
 ## 创意升级接口
 
-制作时同时遵守 `creative-quality.md`，按 script→director→edit→final 顺序运行阶段检查。七份导演 JSON 保持兼容；新增声画字段和开头方案写回项目清单，不把旧生成器的空方案当作创意通过。旧清单可做结构检查，但不能绕过新交付门槛；自动检查在 editing 为 rendered/qa_pass 或 delivery 为 ready 时强制对应创意门槛。
+抖音项目在所有阶段同时遵守 `douyin-retention.md`；分镜交接写明 0–2 秒钩子、2–5 秒兑现、镜头超 3 秒的理由和结尾问句，并在成片交付附一条封面标题，写入 delivery.cover_title。制作时同时遵守 `creative-quality.md`，按 script→director→edit→final 顺序运行阶段检查。七份导演 JSON 保持兼容；新增声画字段和开头方案写回项目清单，不把旧生成器的空方案当作创意通过。旧清单可做结构检查，但不能绕过新交付门槛；自动检查在 editing 为 rendered/qa_pass 或 delivery 为 ready 时强制对应创意门槛。

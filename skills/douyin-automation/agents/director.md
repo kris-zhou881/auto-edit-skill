@@ -1,6 +1,6 @@
 # 导演 Agent
 
-GitHub Skill / 编程技术讲解先读 `references/technical-explainer.md`，使用其中的深色风格、真实占比和节奏检查。其他 20–30 秒竖屏 Skill 讲解读 `references/vertical-explainer-style.md`。将适用参数写入方案并记录 QA。
+抖音项目先读 `references/douyin-retention.md`。GitHub Skill / 编程技术讲解再读 `references/technical-explainer.md`，使用其中的深色风格、真实占比和节奏检查。其他抖音竖屏 Skill 讲解读 `references/vertical-explainer-style.md`。将适用参数写入方案并记录 QA。
 
 ## 目标
 
@@ -22,6 +22,6 @@ GitHub Skill / 编程技术讲解先读 `references/technical-explainer.md`，�
 
 ## 声画逐镜头交接
 
-进入本阶段先运行 --stage script。镜头中除原有字段外，必须填写 caption_style、motion、transition、music、sfx、voice_emotion；每项说明落点、目的、时机及资源需求。使用有理由的留白时明确写原因，不准空字段占位。前三秒从真实成品/结果开始，体现 selected_hook_id 对应钩子；导演不能换成标题卡。旁白的停顿与情绪落在镜头节拍上，字幕以关键词花字和可读性服务信息，不堆特效。
+进入本阶段先运行 --stage script。镜头中除原有字段外，必须填写 caption_style、motion、transition、music、sfx、voice_emotion；每项说明落点、目的、时机及资源需求。使用有理由的留白时明确写原因，不准空字段占位。首帧到 2 秒直接体现 selected_hook_id 对应钩子，禁止片头、标题卡和铺垫；2–5 秒兑现核心信息。镜头尽量不超过 3 秒，末句口播为相关问句，并把这几项写进 quality_checklist.json。旁白的停顿与情绪落在镜头节拍上，字幕只保留简洁核心信息，重点词使用干净统一的强调，不堆花字或特效。
 
 方案写回 project-manifest.json，七份 JSON 同步保留；项目清单是额外声画字段的统一交接来源，旧脚本生成的七份 JSON 不代表已满足本次创意要求。交接剪辑前运行 --stage director。

@@ -19,7 +19,7 @@ function requireValue(condition, message) {
 async function inspect(timeline, video, output) {
   const { assets, shots } = JSON.parse(await readFile(timeline, 'utf8'));
   requireValue(Array.isArray(assets) && Array.isArray(shots) && shots.length, '时间线需要 assets 和非空 shots');
-  const sourceTypes = new Set(['code', 'terminal', 'ui', 'architecture', 'docs']);
+  const sourceTypes = new Set(['code', 'terminal', 'ui', 'architecture', 'docs', 'photo']);
   const origins = new Set(['capture', 'trace_replay', 'animation', 'generated']);
   const sources = new Map();
   for (const source of assets) {
@@ -30,6 +30,10 @@ async function inspect(timeline, video, output) {
       requireValue(typeof source.source === 'string' && source.source.trim(), `${source.id} 缺证据来源`);
       requireValue(typeof source.local_path === 'string' && source.local_path.trim(), `${source.id} 缺本地路径`);
       requireValue((await stat(resolve(dirname(timeline), source.local_path))).isFile(), `${source.id} 的本地路径应为文件`);
+    }
+    if (source.type === 'photo' && source.origin === 'capture' && source.availability === 'available') {
+      requireValue([source.source_identity, source.author, source.rights]
+        .every(value => typeof value === 'string' && value.trim()), `${source.id} 缺照片身份、作者或许可`);
     }
     sources.set(source.id, source);
   }
@@ -44,6 +48,7 @@ async function inspect(timeline, video, output) {
   const report = (layer, start, end, status, evidence, fix) => issues.push({ layer, start, end, status, evidence, fix });
   let cursor = 0;
   let realSeconds = 0;
+  const seenPhotos = new Set();
   for (const [index, shot] of shots.entries()) {
     const source = sources.get(shot?.asset_id);
     requireValue(source && sourceTypes.has(shot.type), `镜头 ${index + 1} 的素材引用或类型无效`);
@@ -55,6 +60,13 @@ async function inspect(timeline, video, output) {
     if (source.availability === 'missing') {
       report('素材', start, end, 'failed', `缺少 ${source.id}`, '补录主张所需证据，或缩小主张范围。');
     } else if (source.origin === 'capture') {
+      if (source.type === 'photo') {
+        const identity = source.source_identity.trim();
+        if (seenPhotos.has(identity)) {
+          report('素材', start, end, 'failed', `照片重复使用：${identity}`, '用另一张有来源的照片，或合成同一个连续镜头。');
+        }
+        seenPhotos.add(identity);
+      }
       realSeconds += length;
     }
     const changes = shot.visual_changes ?? [];
@@ -81,7 +93,7 @@ async function inspect(timeline, video, output) {
   }
   const denominator = Math.max(cursor, duration);
   const ratio = realSeconds / denominator;
-  if (realSeconds <= denominator / 2 + 0.000001) report('素材', 0, duration, 'failed', `真实素材占比 ${(ratio * 100).toFixed(2)}%`, '用真实开发环境的录屏或截图替换非实录主镜头，使成片真实占比超过 50%。');
+  if (realSeconds <= denominator / 2 + 0.000001) report('素材', 0, duration, 'failed', `真实素材占比 ${(ratio * 100).toFixed(2)}%`, '用可追溯的真实照片、截图或录屏替换缺证据的主镜头，使成片真实占比超过 50%。');
   if (Math.abs(cursor - duration) > 0.08) report('节奏', Math.min(cursor, duration), Math.max(cursor, duration),
     'failed', '时间线与视频时长不同', '更新为实际导出版本的逐镜边界，再重新质检。');
 

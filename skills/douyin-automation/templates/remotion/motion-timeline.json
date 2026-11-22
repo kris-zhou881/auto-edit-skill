@@ -1,0 +1,43 @@
+{
+  "fps": 30,
+  "duration": 390,
+  "shots": [
+    {
+      "from": 0, "to": 120, "type": "code", "title": "一串数字，只留偶数",
+      "fileLabel": "示例输入", "source": "动画验证 · 本地样例",
+      "camera": {"from": 0, "to": 30, "x": 8, "y": 5, "scale": 1.035},
+      "lines": [
+        {"at": 0, "text": "$ node demo.mjs"},
+        {"at": 42, "text": "input:  [8, 3, 12, 4]"},
+        {"at": 77, "text": "target: keep even values"}
+      ]
+    },
+    {
+      "from": 120, "to": 245, "type": "code", "title": "哪一行在筛偶数？",
+      "fileLabel": "demo.mjs", "source": "动画验证 · 本地示例代码",
+      "transition": 10,
+      "camera": {"from": 145, "to": 178, "x": 8, "y": 8, "scale": 1.045},
+      "lines": [
+        {"at": 120, "text": "const data = [8, 3, 12, 4];"},
+        {"at": 157, "text": "const even = data.filter("},
+        {"at": 182, "text": "  n => n % 2 === 0);"}
+      ]
+    },
+    {
+      "from": 245, "to": 390, "type": "code", "title": "留下这三个数",
+      "fileLabel": "示例终端输出", "source": "动画验证 · 本地命令回放",
+      "transition": 8,
+      "readout": {"at": 284, "values": ["8", "12", "4"]},
+      "lines": [
+        {"at": 245, "text": "$ node demo.mjs"},
+        {"at": 284, "text": "[8,12,4]"}
+      ]
+    }
+  ],
+  "captions": [
+    {"from": 7, "to": 109, "text": "拿一串数字试试，只留下偶数", "emphasis": "偶数", "emphasisAt": 72},
+    {"from": 128, "to": 238, "text": "能被二整除的数，就留下", "emphasis": "整除", "emphasisAt": 177},
+    {"from": 257, "to": 380, "text": "结果是八、十二和四", "emphasis": "八、十二和四", "emphasisAt": 285}
+  ],
+  "audio": []
+}

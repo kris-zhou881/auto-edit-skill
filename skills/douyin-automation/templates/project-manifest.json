@@ -64,6 +64,7 @@
         "music": null,
         "sfx": null,
         "voice_emotion": null,
+        "hook_visible": false,
         "opening_result": false
       }
     ],
@@ -121,6 +122,7 @@
     "publish_authorized": false,
     "limitations": [
       "模板文件，不是已制作视频"
-    ]
+    ],
+    "cover_title": ""
   }
 }
