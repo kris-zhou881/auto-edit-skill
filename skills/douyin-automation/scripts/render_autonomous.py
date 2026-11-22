@@ -80,6 +80,8 @@ def render(project, dry_run=False, skip_install=False):
     if not workspace.is_dir():
         raise GateError("请先 init 项目")
     info = check_timeline(workspace)
+    # The template writes SRT with exclusive-create; remove only its generated output for re-runs.
+    (workspace / "字幕.srt").unlink(missing_ok=True)
     run(["node", "check-timeline.mjs"], workspace)
     if dry_run:
         return {"status": "preflight_passed", "rendered": False, **info}
