@@ -62,7 +62,12 @@ class CreativeGatesTests(unittest.TestCase):
         d=mock_complete();d['editing']['engine']='remotion'
         d['editing']['preflight']['resources']=[r for r in d['editing']['preflight']['resources'] if r['kind'] in ('voice','caption')]
         d['delivery'].update(manual_publish_only=True,published=False)
+        # Edit-stage checks can run before exporting; a completed project triggers full QA even for --stage edit.
+        d['editing']['status']='not_started'
+        d['delivery']['status']='pending'
         self.assertEqual(validate_manifest(d,stage='edit'),[])
+        d['editing']['status']='qa_pass'
+        d['delivery']['status']='ready'
         self.assertTrue(any('自动审查' in e or '音画' in e for e in validate_manifest(d,stage='final')))
         d['editing']['automated_review']=dict(status='passed',reviewer='Codex 实际音画复核',reviewed_at=NOW,evidence='00:00-00:03 口播与画面内容同步')
         self.assertEqual(validate_manifest(d,stage='final'),[])
